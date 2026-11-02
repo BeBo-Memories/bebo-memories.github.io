@@ -62,17 +62,17 @@
       height: 100%;
       object-fit: cover;
       opacity: 0;
-      transform: scale(1.04);
-      filter: blur(5px) saturate(1.2);
+      transform: scale(1.02);
+      filter: blur(1.5px) saturate(1.1);
       transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1);
     }
     #dynamic-bg-img.active-bg {
-      opacity: 0.42;
+      opacity: 0.6;
     }
     #dynamic-bg-overlay {
       position: absolute;
       inset: 0;
-      background: radial-gradient(circle at center, transparent 10%, var(--bg-main) 92%);
+      background: radial-gradient(circle at center, transparent 35%, color-mix(in srgb, var(--bg-main) 70%, transparent) 100%);
     }
 
     /* كانفاس Three.js الثلاثي الأبعاد */
@@ -875,7 +875,7 @@
       const pw = paper.offsetWidth, phh = paper.offsetHeight, tilt = +card.dataset.tilt || 0;
       const r = { left: rb.left + rb.width / 2 - pw / 2, top: rb.top + rb.height / 2 - phh / 2, width: pw, height: phh };
       r.right = r.left + pw; r.bottom = r.top + phh;
-      setWebsiteBackground(th(mem.img), mem.title);
+      setWebsiteBackground(mem.img, mem.title);
 
       const back = document.createElement('div'); back.className = 'spot-backdrop';
       const el = document.createElement('div'); el.className = 'paper spot-card';
@@ -1044,7 +1044,7 @@
         busy = true; leaf.style.zIndex = 500;
         // الصورة اللي في الصفحة المفتوحة بتبقى خلفية الموقع، زي الحيطة
         const f = faces[2 * turned - 1];
-        if (f && f.type === 'photo') setWebsiteBackground(th(f.img), f.caption);
+        if (f && f.type === 'photo') setWebsiteBackground(f.img, f.caption);
         book.classList.toggle('closed-front', turned === 0);
         book.classList.toggle('closed-back', turned === nLeaves);
         count.textContent = turned === 0 ? 'الغلاف' : turned === nLeaves ? 'النهاية ♡' : `${turned} / ${nLeaves - 1}`;
