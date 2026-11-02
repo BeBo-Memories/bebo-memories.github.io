@@ -64,20 +64,19 @@
       height: 100%;
       object-fit: cover;
       opacity: 0;
-      transform: scale(1.03) translateZ(0);
-      filter: blur(1.5px) saturate(1.1);
+      transform: translateZ(0);
       backface-visibility: hidden;
       will-change: opacity;
-      transition: opacity 1s ease-in-out;
+      transition: opacity .9s ease-in-out;
     }
     .dyn-bg-img.active-bg {
-      opacity: 0.6;
+      opacity: 1;
     }
     #dynamic-bg-overlay {
       z-index: 2;
       position: absolute;
       inset: 0;
-      background: radial-gradient(circle at center, transparent 35%, color-mix(in srgb, var(--bg-main) 70%, transparent) 100%);
+      background: radial-gradient(circle at center, transparent 40%, color-mix(in srgb, var(--bg-main) 55%, transparent) 100%), color-mix(in srgb, var(--bg-main) 22%, transparent);
     }
 
     /* كانفاس Three.js الثلاثي الأبعاد */
@@ -955,7 +954,8 @@
         const next = BG.layers[1 - BG.cur], prev = BG.layers[BG.cur];
         next.src = abs;
         next.style.zIndex = 1; prev.style.zIndex = 0;
-        requestAnimationFrame(() => { next.classList.add('active-bg'); prev.classList.remove('active-bg'); });
+        requestAnimationFrame(() => next.classList.add('active-bg'));
+        clearTimeout(BG.t); BG.t = setTimeout(() => prev.classList.remove('active-bg'), 950);
         BG.cur = 1 - BG.cur;
       });
     }
