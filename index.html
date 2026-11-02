@@ -57,19 +57,24 @@
       pointer-events: none;
       overflow: hidden;
     }
-    #dynamic-bg-img {
+    .dyn-bg-img {
+      position: absolute;
+      inset: 0;
       width: 100%;
       height: 100%;
       object-fit: cover;
       opacity: 0;
-      transform: scale(1.02);
+      transform: scale(1.03) translateZ(0);
       filter: blur(1.5px) saturate(1.1);
-      transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+      backface-visibility: hidden;
+      will-change: opacity;
+      transition: opacity 1s ease-in-out;
     }
-    #dynamic-bg-img.active-bg {
+    .dyn-bg-img.active-bg {
       opacity: 0.6;
     }
     #dynamic-bg-overlay {
+      z-index: 2;
       position: absolute;
       inset: 0;
       background: radial-gradient(circle at center, transparent 35%, color-mix(in srgb, var(--bg-main) 70%, transparent) 100%);
@@ -482,7 +487,8 @@
 
   <!-- ================= 0. الخلفية الديناميكية اللي بتعرض صورة شريط الفيلم اللي واقف عليها ================= -->
   <div id="dynamic-site-bg">
-    <img id="dynamic-bg-img" src="" alt="Dynamic Memory Background" />
+    <img id="dynamic-bg-img" class="dyn-bg-img" alt="" />
+    <img id="dynamic-bg-img2" class="dyn-bg-img" alt="" />
     <div id="dynamic-bg-overlay"></div>
   </div>
 
@@ -929,18 +935,29 @@
     addEventListener('scroll', () => { if (spot && !spot.animating) closeSpot(); }, { passive: true });
     addEventListener('keydown', e => { if (e.key === 'Escape') closeSpot(); });
 
+    // خلفيتين فوق بعض: الصورة الجديدة بتتحمّل الأول وبعدين تظهر فوق القديمة بنعومة (من غير لغوشة)
+    const BG = { layers: [document.getElementById('dynamic-bg-img'), document.getElementById('dynamic-bg-img2')], cur: 0, want: '' };
+    const bgCache = {};
+    function preloadBg(url) {
+      const abs = new URL(url, location.href).href;
+      if (!bgCache[abs]) { const im = new Image(); im.decoding = 'async'; im.src = abs;
+        bgCache[abs] = (im.decode ? im.decode() : new Promise(r => im.onload = r)).catch(() => {}); }
+      return bgCache[abs];
+    }
     function setWebsiteBackground(imgUrl, titleText) {
-      const bgImg = document.getElementById('dynamic-bg-img');
-      const badge = document.getElementById('active-bg-badge');
-      const badgeText = document.getElementById('active-bg-text');
       if (!imgUrl) return;
-      if (bgImg.src !== new URL(imgUrl, location.href).href) {
-        bgImg.classList.remove('active-bg');
-        setTimeout(() => { bgImg.src = imgUrl; bgImg.classList.add('active-bg'); }, 120);
-      } else {
-        bgImg.classList.add('active-bg');
-      }
-
+      const abs = new URL(imgUrl, location.href).href;
+      const top = BG.layers[BG.cur];
+      if (BG.want === abs) { top.classList.add('active-bg'); return; }
+      BG.want = abs;
+      preloadBg(abs).then(() => {
+        if (BG.want !== abs) return;               // اتقلبت صفحة تانية قبل ما دي تحمّل
+        const next = BG.layers[1 - BG.cur], prev = BG.layers[BG.cur];
+        next.src = abs;
+        next.style.zIndex = 1; prev.style.zIndex = 0;
+        requestAnimationFrame(() => { next.classList.add('active-bg'); prev.classList.remove('active-bg'); });
+        BG.cur = 1 - BG.cur;
+      });
     }
 
     // ================= كتاب الذكريات 3D (أي عدد صور) =================
@@ -1044,6 +1061,7 @@
         // الصورة اللي في الصفحة المفتوحة بتبقى خلفية الموقع، زي الحيطة
         const f = faces[2 * turned - 1];
         if (f && f.type === 'photo') setWebsiteBackground(f.img, f.caption);
+        [1, 3, -1].forEach(k => { const g = faces[2 * turned - 1 + 2 * k]; if (g && g.type === 'photo') preloadBg(g.img); });
         book.classList.toggle('closed-front', turned === 0);
         book.classList.toggle('closed-back', turned === nLeaves);
         count.textContent = turned === 0 ? 'الغلاف' : turned === nLeaves ? 'النهاية ♡' : `${turned} / ${nLeaves - 1}`;
