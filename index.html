@@ -79,16 +79,6 @@
       background: radial-gradient(circle at center, transparent 40%, color-mix(in srgb, var(--bg-main) 55%, transparent) 100%), color-mix(in srgb, var(--bg-main) 22%, transparent);
     }
 
-    /* كانفاس Three.js الثلاثي الأبعاد */
-    #webgl-canvas {
-      position: fixed;
-      inset: 0;
-      width: 100vw;
-      height: 100vh;
-      pointer-events: none;
-      z-index: 1;
-    }
-
     /* ================= الإطار الدهبي ورسومات الورد (مأخوذة من التصميم بالظبط) ================= */
     #gold-frame { --k: calc(min(100vw, 640px) / 688); position: fixed; inset: 0; z-index: 41; pointer-events: none; }
     #gold-frame .gf { position: absolute; display: block; height: auto; user-select: none; }
@@ -123,8 +113,6 @@
     }
 
     /* ================= الكتاب 3D + لمعة + خطوط الأجزاء ================= */
-    .book-gl { display: block; width: 100%; touch-action: pan-y; cursor: pointer; -webkit-tap-highlight-color: transparent; }
-    .book-stage.has-gl { padding: 0; perspective: none; }
     .spark { position: fixed; left: 0; top: 0; z-index: 72; pointer-events: none; font-size: 11px; line-height: 1; opacity: 0; will-change: transform, opacity; }
     .fx-line { position: absolute; top: -56px; left: 50%; width: min(420px, 70%); height: 1px; transform: translateX(-50%) scaleX(0);
       background: linear-gradient(90deg, transparent, #D4AF37 30%, #C83E5B 50%, #D4AF37 70%, transparent); opacity: .55; transition: transform 1.6s cubic-bezier(.2,.8,.2,1); }
@@ -232,7 +220,6 @@
     .bk-photo .play-badge { top: calc(50% - 6px); }
     .mo-media { cursor: pointer; }
     .mo-sound { left: auto; top: auto; right: 14px; bottom: 14px; margin: 0; padding: 0; font-size: 15px; }
-    .bk-write { padding: 0 6%; text-align: center; font-family: 'Aref Ruqaa', 'Amiri', serif; font-size: clamp(13px, 3.6vw, 18px); line-height: 2; color: #4E3D42; direction: rtl; }
 
     /* ================= حركات الانتقال ================= */
     .fx-wait { opacity: 0; }
@@ -334,10 +321,7 @@
     .face3d.back { transform: rotateY(180deg); border-radius: 2px 6px 6px 2px; background-image: linear-gradient(90deg, rgba(120,70,60,.16), rgba(120,70,60,0) 12%), linear-gradient(270deg, rgba(0,0,0,.04), transparent 6%); }
     .face3d::after { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .55s ease; background: linear-gradient(90deg, rgba(40,20,20,.22), rgba(40,20,20,0) 70%); }
     .leaf3d.flipping .face3d::after { opacity: 1; }
-    .bk-photo-old { position: relative; width: 100%; padding: 5px; background: linear-gradient(175deg, #FFFEFB, #F6F1E8); box-shadow: 0 0 0 .5px rgba(80,60,45,.14), 0 1px 1.5px rgba(40,25,15,.2), 0 10px 16px -10px rgba(40,25,15,.45); transform: rotate(var(--r, -1.5deg)); }
-    .bk-photo-old img { width: 100%; aspect-ratio: 4 / 4.2; object-fit: cover; display: block; }
     .bk-photo .tape { top: -10px; width: 58px; height: 18px; margin-left: -29px; }
-    .bk-cap { margin-top: 10px; text-align: center; font-family: 'Aref Ruqaa', 'Cairo', serif; font-size: clamp(12px, 3.2vw, 16px); font-weight: 400; color: #5A4A4F; line-height: 1.5; }
     .bk-num { position: absolute; bottom: 5%; left: 0; right: 0; text-align: center; font: 600 10px 'Plus Jakarta Sans', sans-serif; color: #B9A6A0; }
     .bk-text { text-align: center; font-family: 'Cormorant Garamond', serif; font-style: italic; color: #7A5A60; font-size: clamp(15px, 3.6vw, 24px); line-height: 1.5; }
     .bk-text b { display: block; font-style: normal; color: #C83E5B; font-size: 1.3em; margin-top: 6px; }
@@ -345,8 +329,6 @@
       box-shadow: inset 0 0 0 1px rgba(255,255,255,.06); color: #F3D58E; padding: 10%; }
     .face3d.cover.front { border-radius: 10px 3px 3px 10px; background-image: linear-gradient(270deg, rgba(0,0,0,.38), rgba(0,0,0,0) 9%), radial-gradient(120% 90% at 30% 20%, #B9364F, #7E1A30 70%, #5E1124); }
     .face3d.cover.back { border-radius: 3px 10px 10px 3px; background-image: linear-gradient(90deg, rgba(0,0,0,.38), rgba(0,0,0,0) 9%), radial-gradient(120% 90% at 70% 20%, #B9364F, #7E1A30 70%, #5E1124); }
-    .cover-frame { position: absolute; inset: 7%; border: 1.5px solid rgba(243,213,142,.75); border-radius: 4px; }
-    .cover-frame::after { content: ""; position: absolute; inset: 5px; border: .8px solid rgba(243,213,142,.45); border-radius: 2px; }
     .cover-title { position: relative; text-align: center; font-family: 'Cormorant Garamond', serif; font-style: italic; line-height: 1.05;
       font-size: clamp(20px, 5.4vw, 40px); text-shadow: 0 1px 0 rgba(0,0,0,.35); }
     .cover-title small { display: block; font-style: normal; font-family: 'Plus Jakarta Sans', sans-serif; letter-spacing: .3em; font-size: .28em; margin-bottom: 12px; opacity: .85; }
@@ -398,9 +380,6 @@
     .book-stage:has(.closed-front) { animation: bookFloat 4.2s ease-in-out infinite; }
     @keyframes bookFloat { 0%, 100% { translate: 0 0; } 50% { translate: 0 -7px; } }
     .book3d.closed-front .leaf3d:hover { filter: brightness(1.04); }
-    /* كروت الأسباب: تتسحب بالإيد */
-    #lustr-flip-card { touch-action: pan-y; user-select: none; -webkit-user-select: none; }
-    #lustr-flip-card img { -webkit-user-drag: none; pointer-events: none; }
     /* زرار الأغنية */
     #music-btn { position: fixed; z-index: 70; left: max(16px, env(safe-area-inset-left)); bottom: max(16px, env(safe-area-inset-bottom)); width: 48px; height: 48px; border-radius: 50%;
       border: 1px solid rgba(212,175,55,.55); background: rgba(255,252,248,.82); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); color: #C83E5B;
@@ -523,26 +502,6 @@
     .rcard:not(.top) .flip-card-3d-inner { box-shadow: 0 8px 18px -8px rgba(60,25,35,.25); }
     .rcard img { -webkit-user-drag: none; user-select: none; }
 
-    /* ظرف الرسالة الـ 3D */
-    .envelope-3d-scene { perspective: 1400px; }
-    .envelope-flap-3d {
-      transform-origin: top;
-      transition: transform 0.65s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .envelope-box.open .envelope-flap-3d { transform: rotateX(180deg); z-index: 5; }
-    .envelope-letter-3d {
-      transition: transform 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.25s;
-    }
-    .envelope-box.open .envelope-letter-3d {
-      transform: translateY(-130px) translateZ(30px) rotateZ(-1deg);
-      z-index: 40;
-    }
-
-    @keyframes spinVinyl {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-    .vinyl-spinning { animation: spinVinyl 6s linear infinite; }
   </style>
 </head>
 <body class="selection:bg-[#C83E5B] selection:text-white">
@@ -979,7 +938,7 @@
       }, 950);
     }
     addEventListener('scroll', () => { if (spot && !spot.animating) closeSpot(); }, { passive: true });
-    addEventListener('keydown', e => { if (e.key === 'Escape') closeSpot(); });
+    addEventListener('keydown', e => { if (e.key === 'Escape') { closeSpot(); if (!document.getElementById('lightbox-modal').classList.contains('hidden')) closeLightbox(); } });
 
     // خلفيتين فوق بعض: الصورة الجديدة بتتحمّل الأول وبعدين تظهر فوق القديمة بنعومة (من غير لغوشة)
     const BG = { layers: [document.getElementById('dynamic-bg-img'), document.getElementById('dynamic-bg-img2')], cur: 0, want: '' };
@@ -1336,7 +1295,7 @@
 
       // 2) دوسة في مكان فاضي = قلوب بتطير
       addEventListener('click', e => {
-        if (e.target.closest('button, a, input, canvas, .m-card, .paper, .flip-card-3d, #final-envelope, .lt-env, .vinyl, #gate-screen, [onclick]')) return;
+        if (e.target.closest('button, a, input, canvas, video, .m-card, .paper, .flip-card-3d, .lt-env, .lt-voice, .book-stage, .rdeck, #moments, #gate-screen, #lightbox-modal, .spot-card, .spot-backdrop, [onclick]')) return;
         for (let i = 0; i < 7; i++) {
           const h = document.createElement('span'); h.className = 'burst-heart'; h.textContent = '♥';
           h.style.left = e.clientX + 'px'; h.style.top = e.clientY + 'px'; h.style.fontSize = (10 + Math.random() * 10) + 'px';
@@ -1676,39 +1635,6 @@
     })();
 
     // ================= 7. مشغل الموسيقى والـ Lightbox =================
-    let audioCtx = null, isPlaying = false, melodyTimer = null;
-    function toggleMusic() {
-      const disc = document.getElementById('vinyl-disc');
-      const status = document.getElementById('music-status');
-      if (!isPlaying) {
-        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        isPlaying = true;
-        disc.classList.add('vinyl-spinning');
-        status.innerText = "شغال الآن 🎵";
-        const notes = [261.63, 329.63, 392.00, 523.25, 440.00, 392.00, 329.63, 293.66];
-        let step = 0;
-        melodyTimer = setInterval(() => {
-          if (!isPlaying) return;
-          const osc = audioCtx.createOscillator();
-          const gain = audioCtx.createGain();
-          osc.type = 'sine';
-          osc.frequency.setValueAtTime(notes[step % notes.length], audioCtx.currentTime);
-          gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
-          gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 1.1);
-          osc.connect(gain);
-          gain.connect(audioCtx.destination);
-          osc.start();
-          osc.stop(audioCtx.currentTime + 1.1);
-          step++;
-        }, 650);
-      } else {
-        isPlaying = false;
-        disc.classList.remove('vinyl-spinning');
-        status.innerText = "لحننا ♪";
-        clearInterval(melodyTimer);
-      }
-    }
-
     function openLightbox(src, cap, isVideo) {
       const box = document.getElementById('lightbox-media');
       box.innerHTML = isVideo ? `<video src="${esc(src)}" controls autoplay playsinline style="width:100%;max-height:70vh;display:block;background:#000"></video>`
@@ -1727,19 +1653,6 @@
       modal.classList.remove('flex');
     }
 
-    function toggleTheme() {
-      const html = document.documentElement;
-      const current = html.getAttribute('data-theme');
-      if (current === 'cream') {
-        html.setAttribute('data-theme', 'espresso');
-        document.getElementById('theme-icon').innerText = '☀️';
-        document.getElementById('theme-label').innerText = 'ثيم LUSTR الفاتح';
-      } else {
-        html.setAttribute('data-theme', 'cream');
-        document.getElementById('theme-icon').innerText = '🌙';
-        document.getElementById('theme-label').innerText = 'ثيم ليلي دافي';
-      }
-    }
   </script>
 </body>
 </html>
