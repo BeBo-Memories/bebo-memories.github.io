@@ -136,34 +136,24 @@
       display: flex; align-items: flex-end; justify-content: center; padding-bottom: 20px; perspective: 1400px; }
     .lt-env { position: relative; width: var(--ew); height: var(--eh); transform-style: preserve-3d; cursor: pointer; }
     .lt-env::before { content: ""; position: absolute; left: 4%; right: 4%; bottom: -14px; height: 40px; z-index: 0; border-radius: 50%;
-      background: radial-gradient(ellipse at center, rgba(120,50,55,.28), rgba(120,50,55,0) 70%); pointer-events: none; }
+      background: radial-gradient(ellipse at center, rgba(70,35,30,.22), rgba(70,35,30,0) 70%); pointer-events: none; }
     .lt-env::after { content: ""; position: absolute; inset: 0; z-index: 0; border-radius: 6px; pointer-events: none;
-      box-shadow: 0 18px 30px -12px rgba(110,45,50,.35), 0 2px 4px rgba(110,45,50,.12); }
+      box-shadow: 0 20px 28px -10px rgba(70,35,30,.25), 0 3px 5px rgba(70,35,30,.12); }
     .lt-env:focus-visible { outline: 2px solid #C83E5B; outline-offset: 8px; border-radius: 6px; }
     .lt-env-back, .lt-env-pocket, .lt-flap-out, .lt-flap-in { position: absolute; inset: 0; border-radius: 5px; }
-    .lt-env-back { z-index: 1; border-radius: 6px; background:
-      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='26'%3E%3Cpath d='M13 18.5l-.9-.8C8.9 14.8 7 13.1 7 11.1 7 9.4 8.3 8.2 9.9 8.2c.9 0 1.8.4 2.4 1.1.6-.7 1.5-1.1 2.4-1.1 1.6 0 2.9 1.2 2.9 2.9 0 2-1.9 3.7-5.1 6.6z' fill='%23C9A24E' fill-opacity='.38'/%3E%3C/svg%3E") 0 0/26px 26px,
-      linear-gradient(180deg, #FBF3EC, #F4E4DA 60%, #E2B9B3); }
-    .lt-env-pocket { z-index: 4; border-radius: 6px; background: var(--env-paper),
-        linear-gradient(to top right, rgba(255,255,255,0) 49.6%, rgba(150,70,75,.10) 50%, rgba(255,255,255,0) 58%),
-        linear-gradient(to top left, rgba(255,255,255,0) 49.6%, rgba(150,70,75,.10) 50%, rgba(255,255,255,0) 58%),
-        linear-gradient(180deg, #F2D2CC, #EAC0BA 70%, #E3B3AD);
+    .lt-env-back { z-index: 1; background: var(--env-paper), linear-gradient(180deg, #E3CDC1, #EAD8CD); }
+    .lt-env-pocket { z-index: 4; background: var(--env-paper), linear-gradient(180deg, #F3E5DB, #EEDCD0);
       clip-path: polygon(0 0, 50% 54%, 100% 0, 100% 100%, 0 100%); }
-    .lt-env-pocket::after { content: ""; position: absolute; inset: 9px; border: 1px solid rgba(201,162,78,.75); border-radius: 3px;
-      box-shadow: inset 0 0 0 3px rgba(255,255,255,0), inset 0 0 0 4px rgba(201,162,78,.35); pointer-events: none; }
     .lt-env-pocket::before { content: ""; position: absolute; inset: 0;
-      background: linear-gradient(to top right, transparent 49.75%, rgba(201,162,78,.85) 50%, transparent 50.35%),
-                  linear-gradient(to top left, transparent 49.75%, rgba(201,162,78,.85) 50%, transparent 50.35%),
-                  linear-gradient(180deg, rgba(255,255,255,.25), transparent 45%); }
+      background: linear-gradient(to top right, transparent 49.7%, rgba(120,70,60,.14) 50%, transparent 50.5%),
+                  linear-gradient(to top left, transparent 49.7%, rgba(120,70,60,.14) 50%, transparent 50.5%),
+                  linear-gradient(180deg, rgba(255,255,255,.18), transparent 40%); }
     .lt-env-flap { position: absolute; left: 0; top: 0; width: 100%; height: 60%; z-index: 5; transform-origin: 50% 0; transform-style: preserve-3d; }
-    .lt-flap-out { backface-visibility: hidden; clip-path: polygon(0 0, 100% 0, 50% 100%); background: linear-gradient(160deg, #E9CB7E, #C9A24E 45%, #E8C977); }
-    .lt-flap-out::before { content: ""; position: absolute; inset: 0; clip-path: polygon(1.6% 0, 98.4% 0, 50% 96.5%);
-      background: var(--env-paper), radial-gradient(120% 90% at 50% 0%, #F6DCD6, #EBC3BC 60%, #E2B2AC); }
+    .lt-flap-out { backface-visibility: hidden; clip-path: polygon(0 0, 100% 0, 50% 100%); background: var(--env-paper), linear-gradient(180deg, #F2E3D9, #E6D2C6); }
     .lt-flap-in { transform: rotateX(180deg); backface-visibility: hidden; clip-path: polygon(0 100%, 100% 100%, 50% 0);
-      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='26'%3E%3Cpath d='M13 18.5l-.9-.8C8.9 14.8 7 13.1 7 11.1 7 9.4 8.3 8.2 9.9 8.2c.9 0 1.8.4 2.4 1.1.6-.7 1.5-1.1 2.4-1.1 1.6 0 2.9 1.2 2.9 2.9 0 2-1.9 3.7-5.1 6.6z' fill='%23C9A24E' fill-opacity='.45'/%3E%3C/svg%3E") 0 0/26px 26px, linear-gradient(0deg, #FBF3EC, #F3E2D8); }
-    .lt-env-to { position: absolute; left: 0; right: 0; bottom: 8%; z-index: 6; text-align: center; font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 600;
-      font-size: clamp(17px, 5.4vw, 22px); color: #8A5A2E; letter-spacing: .02em; pointer-events: none; transition: opacity .6s;
-      text-shadow: 0 1px 0 rgba(255,240,220,.7); }
+      background: repeating-linear-gradient(45deg, rgba(200,62,91,.14) 0 6px, transparent 6px 14px), #F7EAEE; }
+    .lt-env-to { position: absolute; left: 0; right: 0; bottom: 15%; z-index: 6; text-align: center; font-family: 'Cormorant Garamond', serif; font-style: italic;
+      font-size: clamp(18px, 6vw, 24px); color: #7A4A50; opacity: .85; pointer-events: none; transition: opacity .6s; }
     .lt-seal { position: absolute; left: 50%; top: 60%; width: 56px; height: 56px; margin: -28px 0 0 -28px; z-index: 7; border-radius: 50%;
       background: radial-gradient(circle at 36% 32%, #E2566A 0 8%, #B32237 30%, #7C0F22 72%, #5C0918 100%);
       box-shadow: 0 3px 6px rgba(60,10,20,.45), inset 0 -3px 6px rgba(0,0,0,.35), inset 0 2px 3px rgba(255,180,190,.35);
@@ -173,6 +163,20 @@
     .lt-seal::after { content: ""; position: absolute; inset: 8px; border-radius: 50%; border: 1.5px solid rgba(255,190,200,.3); box-shadow: inset 0 1px 2px rgba(0,0,0,.35); }
     .lt-seal span { font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 700; font-size: 26px; color: #9A1A2F;
       text-shadow: 0 1px 0 rgba(255,170,180,.45), 0 -1px 0 rgba(60,0,10,.5); }
+    /* الظرف بيطفو بهدوء والختم بينبض لحد ما تفتحه */
+    @keyframes envFloat { 0%, 100% { translate: 0 0; } 50% { translate: 0 -7px; } }
+    @keyframes sealBeat { 0%, 100% { scale: 1; } 12% { scale: 1.09; } 24% { scale: 1; } 36% { scale: 1.06; } 48% { scale: 1; } }
+    .lt-env:not(.is-open) { animation: envFloat 4.2s ease-in-out infinite; }
+    .lt-env:not(.is-open) .lt-seal { animation: sealBeat 2.4s ease-in-out infinite; }
+    .lt-hint { position: absolute; left: 0; right: 0; bottom: -6px; text-align: center; font-size: 13px; color: #A0707A; letter-spacing: .02em; pointer-events: none;
+      animation: hintPulse 2.4s ease-in-out infinite; transition: opacity .5s; }
+    .lt-hint.gone { opacity: 0; animation: none; }
+    @keyframes hintPulse { 0%, 100% { opacity: .45; } 50% { opacity: .95; } }
+    /* شريط دهبي فوق بيوضح إنتي وصلتي لحد فين */
+    #love-progress { position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 65; pointer-events: none; transform-origin: 0 50%; transform: scaleX(0);
+      background: linear-gradient(90deg, #E8879C, #C83E5B 45%, #D4AF37); box-shadow: 0 0 8px rgba(200,62,91,.45); opacity: 0; transition: opacity .6s; }
+    #love-progress.on { opacity: 1; }
+    html[dir="rtl"] #love-progress { transform-origin: 100% 50%; }
     .lt-env:hover .lt-seal { transform: scale(1.06) rotate(-4deg); }
 
     /* الرسالة: ورق قطني بحواف مقطوعة باليد وإطار دهبي رفيع */
@@ -732,6 +736,7 @@
             <div class="lt-seal" id="lt-seal"><span>H</span></div>
             <div class="lt-env-to">For my Habiba</div>
           </div>
+          <div class="lt-hint" id="lt-hint">دوسي على الختم ♡</div>
         </div>
       </section>
 
@@ -1065,6 +1070,7 @@
         stL.style.boxShadow = thick(nLeaves - turned - 1);
         stR.style.boxShadow = thick(turned - 1);
         count.textContent = turned === 0 ? 'الغلاف' : turned === nLeaves ? 'النهاية ♡' : `${turned} / ${nLeaves - 1}`;
+        if (turned === nLeaves) document.dispatchEvent(new CustomEvent('book-end', { detail: book }));
         prev.disabled = turned === 0; next.disabled = turned === nLeaves;
       }
       // الصفحة بتتني وهي بتتقلب: بنقسمها شرائح متركبة جوه بعض، كل شريحة متأخرة شوية عن اللي قبلها
@@ -1122,6 +1128,7 @@
         book.classList.toggle('closed-front', turned === 0);
         book.classList.toggle('closed-back', turned === nLeaves);
         count.textContent = turned === 0 ? 'الغلاف' : turned === nLeaves ? 'النهاية ♡' : `${turned} / ${nLeaves - 1}`;
+        if (turned === nLeaves) document.dispatchEvent(new CustomEvent('book-end', { detail: book }));
         prev.disabled = turned === 0; next.disabled = turned === nLeaves;
         const settle = () => { leaf.classList.add('snap'); leaf.classList.toggle('turned', toT); void leaf.offsetWidth; leaf.classList.remove('snap'); busy = false; layout(); };
         if (reduceMotion) settle();
@@ -1179,7 +1186,10 @@
           if (i) { const b = document.createElement('bdi'); b.dir = 'ltr'; b.className = 'nm'; b.textContent = name; frag.appendChild(b); }
           if (part) frag.appendChild(document.createTextNode(part));
         });
+        const par = n.parentElement;
         n.replaceWith(frag);
+        // الجملة نفسها تاخد اتجاهها من أول كلمة فيها (For my … تفضل شمال، والعربي يمين)
+        if (par && !par.hasAttribute('dir')) par.dir = 'auto';
       });
       document.title = document.title.replace(/Habiba/g, name);
     })();
@@ -1372,6 +1382,40 @@
         const io = new IntersectionObserver(es => { if (es[0].isIntersecting) { io.disconnect(); l.classList.add('on'); } }, { threshold: .1 });
         io.observe(sec);
       });
+
+      // 5) قلوب بتفرقع وتطير من مكان معيّن (للجواب وآخر الكتاب)
+      function heartsFrom(el, n = 26, spread = 1) {
+        const r = el.getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height * .35;
+        const cols = ['#C83E5B', '#E8879C', '#D4AF37', '#F2A7B8'];
+        for (let i = 0; i < n; i++) {
+          const h = document.createElement('span'); h.className = 'burst-heart'; h.textContent = i % 5 ? '♥' : '✦';
+          h.style.left = cx + 'px'; h.style.top = cy + 'px'; h.style.color = cols[i % 4]; h.style.fontSize = (12 + Math.random() * 16) + 'px';
+          document.body.appendChild(h);
+          const a = -Math.PI / 2 + (Math.random() - .5) * Math.PI * 1.3 * spread, d = 90 + Math.random() * 170;
+          h.animate([{ transform: 'translate(-50%,-50%) scale(.2)', opacity: 1 },
+                     { transform: `translate(calc(-50% + ${Math.cos(a) * d * .6}px), calc(-50% + ${Math.sin(a) * d * .5}px)) scale(1.1)`, opacity: 1, offset: .45 },
+                     { transform: `translate(calc(-50% + ${Math.cos(a) * d}px), calc(-50% + ${Math.sin(a) * d + 60}px)) scale(.8) rotate(${(Math.random() - .5) * 80}deg)`, opacity: 0 }],
+            { duration: 1600 + Math.random() * 700, delay: Math.random() * 180, easing: 'cubic-bezier(.2,.7,.3,1)' }).onfinish = () => h.remove();
+        }
+      }
+      document.addEventListener('letter-opened', e => heartsFrom(e.detail, 30));
+      let bookCelebrated = false;
+      document.addEventListener('book-end', e => { if (bookCelebrated) return; bookCelebrated = true; setTimeout(() => heartsFrom(e.detail, 24, 1.2), 700); });
+
+      // 6) شريط التقدم الدهبي
+      const bar = document.createElement('div'); bar.id = 'love-progress'; document.body.appendChild(bar);
+      let ticking = false;
+      const upd = () => { ticking = false; const max = document.documentElement.scrollHeight - innerHeight;
+        if (document.documentElement.classList.contains('locked') || max <= 0) { bar.classList.remove('on'); return; }
+        bar.classList.add('on'); bar.style.transform = `scaleX(${Math.min(1, Math.max(0, scrollY / max)).toFixed(4)})`; };
+      addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(upd); } }, { passive: true });
+
+      // 7) العدّاد لما يخلص بينبض نبضة قلب
+      if (dayEl) {
+        const io2 = new IntersectionObserver(es => { if (!es[0].isIntersecting) return; io2.disconnect();
+          setTimeout(() => { dayEl.animate([{ transform: 'scale(1)' }, { transform: 'scale(1.25)', color: '#C83E5B' }, { transform: 'scale(1)' }, { transform: 'scale(1.12)' }, { transform: 'scale(1)' }], { duration: 900, easing: 'ease-out' }); heartsFrom(dayEl, 10, .7); }, 1850); }, { threshold: .6 });
+        dayEl.style.display = 'inline-block'; io2.observe(dayEl);
+      }
     })();
 
     // ================= الجواب: الختم يتكسر، الظرف يتفتح، والرسالة تطلع منه وتفضل جواه شوية =================
@@ -1392,7 +1436,7 @@
       const E = 'cubic-bezier(.6,0,.2,1)';
       const wait = ms => new Promise(r => setTimeout(r, ms));
       async function open() {
-        if (opened) return; opened = true;
+        if (opened) return; opened = true; env.classList.add('is-open'); const hint = document.getElementById('lt-hint'); if (hint) hint.classList.add('gone');
         env.style.cursor = 'default';
         if (reduceMotion) { flap.style.transform = 'rotateX(180deg)'; flap.style.zIndex = 0; seal.style.display = 'none'; rest(); lines.forEach(l => l.style.opacity = 1); return; }
         // 1) الختم الشمع بيتكسر ويقع
@@ -1413,6 +1457,7 @@
           { duration: 1700, easing: 'cubic-bezier(.45,0,.15,1)', fill: 'forwards' }).finished;
         letterEl.style.transform = `translate3d(0,${-rise}px,0)`;
         letterEl.getAnimations().forEach(a => a.cancel());
+        document.dispatchEvent(new CustomEvent('letter-opened', { detail: env }));
         // 4) الكلام بيظهر سطر ورا سطر
         lines.forEach((el, i) => {
           el.animate([{ opacity: 0, transform: 'translateY(10px)' }, { opacity: 1, transform: 'none' }],
@@ -1490,7 +1535,7 @@
       const code = b.getAttribute('onclick'); b.removeAttribute('onclick');
       const run = () => { if (code.startsWith('typePin')) typePin(code.match(/'(\d)'/)[1]); else if (code.startsWith('clearPin')) clearPin(); else popPin(); };
       // الضغطة بتبان أول ما الصباع يلمس، والرقم بيتكتب مع الـ click (عشان فيديو البداية يقدر يشتغل بالصوت على الآيفون)
-      b.addEventListener('pointerdown', e => { if (e.button > 0) return; b.classList.add('press'); });
+      b.addEventListener('pointerdown', e => { if (e.button > 0) return; b.classList.add('press'); if (navigator.vibrate) try { navigator.vibrate(8); } catch (_) {} });
       const up = () => setTimeout(() => b.classList.remove('press'), 90);
       b.addEventListener('pointerup', up); b.addEventListener('pointerleave', up); b.addEventListener('pointercancel', up);
       b.addEventListener('click', run);
