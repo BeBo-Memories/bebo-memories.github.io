@@ -85,6 +85,7 @@ window.SITE = {
   /* الكروت الكبيرة */
   moments: [
     { video: "videos/vid-30.mp4", poster: "photos/vid-30-cover.jpg", title: "كل دنيتي♥️🌍", text: "انا مهما هقولك و هوصفلك انا بحب الفيديو دا قد اي مش هتتخيلي فيه كل صورنا و فيديوهتنا انا بحبك اوووي اوووي بجد يحبيبه ربنا يخليكي ليا ينور عيني 😍♥️♥️♥️♥️♥️" },
+    { video: "videos/vid-32.mp4", poster: "photos/vid-32-cover.jpg", title: "Happy Birthday my love 🎂♥️", text: "كل سنة وانتي حبيبتي و نور عيني و أحلى حاجة في دنيتي ♥️" },
   ],
 
   /* أسباب بحبك */
