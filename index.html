@@ -172,11 +172,6 @@
       animation: hintPulse 2.4s ease-in-out infinite; transition: opacity .5s; }
     .lt-hint.gone { opacity: 0; animation: none; }
     @keyframes hintPulse { 0%, 100% { opacity: .45; } 50% { opacity: .95; } }
-    /* شريط دهبي فوق بيوضح إنتي وصلتي لحد فين */
-    #love-progress { position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 65; pointer-events: none; transform-origin: 0 50%; transform: scaleX(0);
-      background: linear-gradient(90deg, #E8879C, #C83E5B 45%, #D4AF37); box-shadow: 0 0 8px rgba(200,62,91,.45); opacity: 0; transition: opacity .6s; }
-    #love-progress.on { opacity: 1; }
-    html[dir="rtl"] #love-progress { transform-origin: 100% 50%; }
     .lt-env:hover .lt-seal { transform: scale(1.06) rotate(-4deg); }
 
     /* الرسالة: ورق قطني بحواف مقطوعة باليد وإطار دهبي رفيع */
@@ -242,7 +237,7 @@
     /* ================= حركات الانتقال ================= */
     .fx-wait { opacity: 0; }
     .fx-word { display: inline-block; transform-origin: 50% 100%; }
-    .burst-heart { position: fixed; z-index: 70; pointer-events: none; font-size: 18px; line-height: 1; }
+    .burst-heart { position: fixed; z-index: 140; pointer-events: none; font-size: 18px; line-height: 1; }
 
     /* ================= قلوب صغيرة طايرة (CSS خفيف) ================= */
     #hearts { position: fixed; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; contain: strict; }
@@ -519,6 +514,15 @@
       background: linear-gradient(145deg, #D14764, #9E243F);
     }
 
+    /* كروت أسباب بحبك: رزمة كروت حقيقية، كل كارت جاهز بصورته (من غير تبديل صور ولا تداخل) */
+    .rdeck { position: relative; touch-action: pan-y; }
+    .rcard { position: absolute; inset: 0; will-change: transform, opacity; backface-visibility: hidden; -webkit-backface-visibility: hidden;
+      transition: transform .5s cubic-bezier(.22,1,.36,1), opacity .4s ease; touch-action: pan-y; cursor: pointer; }
+    .rcard .flip-card-3d-inner { border-radius: 28px; box-shadow: 0 18px 40px -12px rgba(60,25,35,.35); }
+    .rcard:not(.top) { pointer-events: none; }
+    .rcard:not(.top) .flip-card-3d-inner { box-shadow: 0 8px 18px -8px rgba(60,25,35,.25); }
+    .rcard img { -webkit-user-drag: none; user-select: none; }
+
     /* ظرف الرسالة الـ 3D */
     .envelope-3d-scene { perspective: 1400px; }
     .envelope-flap-3d {
@@ -675,27 +679,7 @@
         <p class="font-sans-lux text-[10px] tracking-[0.28em] uppercase text-[#8E7C81] mb-1">REASONS I LOVE YOU</p>
         <h2 class="font-serif-lux italic text-4xl md:text-5xl mb-2">Every moment<br/>with you, Habiba</h2>
 
-        <div data-fx="pop" class="relative w-72 sm:w-80 h-96 mb-8 flex items-center justify-center">
-          <div class="absolute inset-0 bg-white rounded-[28px] border border-[#EFE4E6] shadow-md translate-x-5 scale-95 opacity-70 rotate-3 pointer-events-none"></div>
-          <div class="absolute inset-0 bg-white rounded-[28px] border border-[#EFE4E6] shadow-md translate-x-9 scale-90 opacity-40 rotate-6 pointer-events-none"></div>
-
-          <div id="lustr-flip-card" onclick="if (!this._dragged) this.classList.toggle('flipped')" class="flip-card-3d w-full h-full cursor-pointer z-10">
-            <div class="flip-card-3d-inner shadow-2xl rounded-[28px]">
-              <div class="flip-face bg-white p-3 border border-[#EFE4E6]">
-                <img id="deck-img" src="" alt="" class="w-full h-full object-cover rounded-2xl" />
-              </div>
-              <div class="flip-face flip-back p-8 flex flex-col items-center justify-between text-white text-center">
-                <div class="w-11 h-11 rounded-full bg-white/15 flex items-center justify-center text-base">♡</div>
-                <div class="space-y-3">
-                  <p id="deck-title" class="font-sans-lux text-xs tracking-[0.22em] uppercase font-bold">I LOVE YOU SO MUCH</p>
-                  <p id="deck-desc" class="text-sm text-rose-100 leading-relaxed">
-                    يا حبيبة، كل يوم بيعدي وإنتي معايا بحس إن الدنيا كلها بتضحكلي ❤️
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <div data-fx="pop" class="rdeck w-72 sm:w-80 h-96 mb-8" id="rdeck"></div>
 
         <div dir="ltr" class="flex items-center gap-4 mb-6">
           <button onclick="switchDeck(-1)" class="w-10 h-10 rounded-full border border-[#E2D2D6] bg-white text-[#2C2225] hover:border-[#C83E5B] hover:text-[#C83E5B] transition">←</button>
@@ -942,6 +926,7 @@
       const r = { left: rb.left + rb.width / 2 - pw / 2, top: rb.top + rb.height / 2 - phh / 2, width: pw, height: phh };
       r.right = r.left + pw; r.bottom = r.top + phh;
       setWebsiteBackground(mem.img, mem.title);
+      if (window.loveBurst) setTimeout(() => window.loveBurst(), 380);
 
       const back = document.createElement('div'); back.className = 'spot-backdrop';
       const el = document.createElement('div'); el.className = 'paper spot-card';
@@ -1385,7 +1370,8 @@
 
       // 5) قلوب بتفرقع وتطير من مكان معيّن (للجواب وآخر الكتاب)
       function heartsFrom(el, n = 26, spread = 1) {
-        const r = el.getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height * .35;
+        const r = el.getBoundingClientRect ? el.getBoundingClientRect() : { left: el.x, top: el.y, width: 0, height: 0 };
+        const cx = r.left + r.width / 2, cy = r.top + r.height * .35;
         const cols = ['#C83E5B', '#E8879C', '#D4AF37', '#F2A7B8'];
         for (let i = 0; i < n; i++) {
           const h = document.createElement('span'); h.className = 'burst-heart'; h.textContent = i % 5 ? '♥' : '✦';
@@ -1399,16 +1385,10 @@
         }
       }
       document.addEventListener('letter-opened', e => heartsFrom(e.detail, 30));
+      // لما صورة أو فيديو يتفتح: قلوب بتطلع من النص
+      window.loveBurst = (x = innerWidth / 2, y = innerHeight * .62) => heartsFrom({ x, y }, 22, 1.25);
       let bookCelebrated = false;
       document.addEventListener('book-end', e => { if (bookCelebrated) return; bookCelebrated = true; setTimeout(() => heartsFrom(e.detail, 24, 1.2), 700); });
-
-      // 6) شريط التقدم الدهبي
-      const bar = document.createElement('div'); bar.id = 'love-progress'; document.body.appendChild(bar);
-      let ticking = false;
-      const upd = () => { ticking = false; const max = document.documentElement.scrollHeight - innerHeight;
-        if (document.documentElement.classList.contains('locked') || max <= 0) { bar.classList.remove('on'); return; }
-        bar.classList.add('on'); bar.style.transform = `scaleX(${Math.min(1, Math.max(0, scrollY / max)).toFixed(4)})`; };
-      addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(upd); } }, { passive: true });
 
       // 7) العدّاد لما يخلص بينبض نبضة قلب
       if (dayEl) {
@@ -1631,45 +1611,68 @@
     }
 
     // ================= 5. كروت LUSTR القابلة للقلب =================
-    const deckData = (SITE.reasons || []).map(r => ({ img: r.photo, title: r.title || '', desc: r.text || '' }));
-    if (deckData.length) { document.getElementById('deck-img').src = deckData[0].img; document.getElementById('deck-title').innerText = deckData[0].title; document.getElementById('deck-desc').innerText = deckData[0].desc; }
-    else { const dk = document.getElementById('lustr-flip-card'); if (dk) dk.closest('section').style.display = 'none'; }
-    let deckIdx = 0;
+    const deckData = (SITE.reasons || []).map(r => ({ img: r.photo, title: r.title || '', desc: r.text || '' })).filter(d => d.img);
+    let switchDeck = () => {};
+    (function reasonsDeck() {
+      const deck = document.getElementById('rdeck');
+      if (!deck || !deckData.length) { if (deck) deck.closest('section').style.display = 'none'; return; }
+      const cards = deckData.map(d => {
+        const c = document.createElement('div'); c.className = 'rcard flip-card-3d';
+        c.innerHTML = `<div class="flip-card-3d-inner"><div class="flip-face bg-white p-3 border border-[#EFE4E6]"><img src="${esc(d.img)}" alt="" decoding="async" draggable="false" class="w-full h-full object-cover rounded-2xl"></div>` +
+          `<div class="flip-face flip-back p-8 flex flex-col items-center justify-between text-white text-center"><div class="w-11 h-11 rounded-full bg-white/15 flex items-center justify-center text-base">♡</div>` +
+          `<div class="space-y-3"><p class="font-sans-lux text-xs tracking-[0.22em] uppercase font-bold" dir="auto">${esc(d.title)}</p><p class="text-sm text-rose-100 leading-relaxed" dir="auto">${esc(d.desc)}</p></div><div></div></div></div>`;
+        deck.appendChild(c); return c;
+      });
+      let order = cards.slice(), busy = false;
+      const POS = [[0, 1, 0, 1], [18, .95, 3, 1], [32, .9, 6, .75]];
+      const posT = k => { const p = POS[Math.min(k, 2)]; return `translate3d(${p[0]}px,0,0) scale(${p[1]}) rotate(${p[2]}deg)`; };
+      function layout(skip) {
+        order.forEach((c, k) => {
+          if (c === skip) return;
+          c.style.zIndex = 20 - k; c.classList.toggle('top', k === 0);
+          if (k) c.classList.remove('flipped');
+          c.style.transform = posT(k); c.style.opacity = k > 2 ? 0 : POS[Math.min(k, 2)][3];
+        });
+      }
+      layout();
+      const W = () => deck.offsetWidth * 1.5;
+      function next(sign = -1) { // الكارت اللي فوق بيطير، واللي تحته بيطلع مكانه في نفس اللحظة
+        if (busy || order.length < 2) return; busy = true;
+        const c = order.shift(); order.push(c);
+        c.style.transition = 'transform .42s cubic-bezier(.4,0,.9,.6), opacity .42s ease';
+        c.style.transform = `translate3d(${sign * W()}px,-30px,0) rotate(${sign * 22}deg)`; c.style.opacity = 0; c.classList.remove('top', 'flipped');
+        layout(c);
+        setTimeout(() => {
+          c.style.transition = 'none'; c.style.zIndex = 20 - order.length; c.style.transform = posT(order.length - 1); void c.offsetWidth;
+          c.style.transition = ''; layout(); busy = false;
+        }, 430);
+      }
+      function prev() { // آخر كارت بيرجع من الجنب ويقعد فوق
+        if (busy || order.length < 2) return; busy = true;
+        const c = order.pop(); order.unshift(c);
+        c.style.transition = 'none'; c.style.zIndex = 30; c.style.opacity = 0; c.style.transform = `translate3d(${W()}px,-30px,0) rotate(22deg)`; void c.offsetWidth;
+        c.style.transition = ''; layout(); setTimeout(() => busy = false, 450);
+      }
+      switchDeck = dir => dir > 0 ? next(-1) : prev();
 
-    function switchDeck(dir) {
-      const card = document.getElementById('lustr-flip-card');
-      card.classList.remove('flipped');
-      deckIdx = (deckIdx + dir + deckData.length) % deckData.length;
-      setTimeout(() => {
-        document.getElementById('deck-img').src = deckData[deckIdx].img;
-        document.getElementById('deck-title').innerText = deckData[deckIdx].title;
-        document.getElementById('deck-desc').innerText = deckData[deckIdx].desc;
-      }, 200);
-    }
-
-    // سحب الكارت بالإيد: يمين أو شمال يقلب للكارت اللي بعده
-    (function swipeDeck() {
-      const card = document.getElementById('lustr-flip-card'); if (!card || deckData.length < 2) return;
-      let x0 = 0, y0 = 0, dx = 0, on = false, locked = null, busy = false;
-      const set = (x, t) => { card.style.transition = t || 'none'; card.style.transform = x ? `translateX(${x}px) rotate(${x / 18}deg)` : ''; };
-      card.addEventListener('pointerdown', e => { if (busy) return; on = true; locked = null; dx = 0; x0 = e.clientX; y0 = e.clientY; card._dragged = false; });
-      card.addEventListener('pointermove', e => {
+      // سحب بالإيد + دوسة تقلب الكارت
+      let x0 = 0, y0 = 0, dx = 0, on = false, locked = null, dragged = false, top = null;
+      deck.addEventListener('pointerdown', e => { if (busy) return; top = order[0]; on = true; locked = null; dx = 0; dragged = false; x0 = e.clientX; y0 = e.clientY; });
+      deck.addEventListener('pointermove', e => {
         if (!on) return; const mx = e.clientX - x0, my = e.clientY - y0;
-        if (locked === null && (Math.abs(mx) > 8 || Math.abs(my) > 8)) { locked = Math.abs(mx) > Math.abs(my); if (locked) card.setPointerCapture(e.pointerId); }
-        if (!locked) return; dx = mx; card._dragged = true; set(dx);
+        if (locked === null && (Math.abs(mx) > 8 || Math.abs(my) > 8)) { locked = Math.abs(mx) > Math.abs(my) * 1.2; if (locked) { try { deck.setPointerCapture(e.pointerId); } catch (_) {} top.style.transition = 'none'; } }
+        if (!locked) return; dx = mx; dragged = true;
+        top.style.transform = `translate3d(${dx}px,${Math.abs(dx) * -.04}px,0) rotate(${dx / 16}deg)`;
+        const k = Math.min(1, Math.abs(dx) / 140), n1 = order[1];   // الكارت اللي تحته بيقرّب وهي بتسحب
+        if (n1) { n1.style.transition = 'none'; n1.style.transform = `translate3d(${18 * (1 - k)}px,0,0) scale(${.95 + .05 * k}) rotate(${3 * (1 - k)}deg)`; }
       });
       const end = () => {
-        if (!on) return; on = false; if (!locked) return;
-        setTimeout(() => card._dragged = false, 50);
-        if (Math.abs(dx) < 70) { set(0, 'transform .45s cubic-bezier(.22,1.3,.36,1)'); return; }
-        busy = true; const dir = dx < 0 ? 1 : -1, w = card.offsetWidth * 1.4 * Math.sign(dx);
-        set(w, 'transform .32s ease-in');
-        setTimeout(() => {
-          switchDeck(dir);
-          setTimeout(() => { set(-w * .6); void card.offsetWidth; set(0, 'transform .5s cubic-bezier(.22,1.2,.36,1)'); setTimeout(() => busy = false, 500); }, 220);
-        }, 300);
+        if (!on) return; on = false;
+        if (!locked) { if (!dragged && top) top.classList.toggle('flipped'); return; }
+        top.style.transition = ''; if (order[1]) order[1].style.transition = '';
+        if (Math.abs(dx) > 70) next(Math.sign(dx)); else layout();
       };
-      card.addEventListener('pointerup', end); card.addEventListener('pointercancel', end);
+      deck.addEventListener('pointerup', end); deck.addEventListener('pointercancel', () => { on = false; if (top) top.style.transition = ''; layout(); });
     })();
 
     // ================= 7. مشغل الموسيقى والـ Lightbox =================
@@ -1714,6 +1717,7 @@
       const modal = document.getElementById('lightbox-modal');
       modal.classList.remove('hidden');
       modal.classList.add('flex');
+      if (window.loveBurst) setTimeout(() => window.loveBurst(), 150);
     }
     function closeLightbox() {
       const modal = document.getElementById('lightbox-modal');
