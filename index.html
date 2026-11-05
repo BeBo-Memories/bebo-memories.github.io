@@ -213,6 +213,7 @@
     .lv-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin-bottom: 4px; }
     .lv-time { flex: none; font-size: 11px; color: #9A7A80; font-variant-numeric: tabular-nums; direction: ltr; }
     .lt-voice { position: relative; }
+    bdi.nm { unicode-bidi: isolate; direction: ltr; white-space: nowrap; }
     .lt-sign { direction: ltr; text-align: left; margin-top: 10px; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 20px; color: #8E6E73; }
 
     /* الصفحة وهي بتتني */
@@ -1029,12 +1030,12 @@
       const COVER = th(SITE.bookCover || (photos[0] || {}).img || '');
       const heartSvg = '<svg viewBox="0 0 40 22" class="bk-doodle"><path d="M2 14c6 0 9-1 13-4M38 14c-6 0-9-1-13-4M20 19c-6-4-9-7-9-10a4 4 0 0 1 9-1 4 4 0 0 1 9 1c0 3-3 6-9 10z" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>';
       function face(f, side) {
-        if (f.type === 'cover') return `<div class="face3d cover ${side}"><div class="cover-stitch"></div>${COVER ? `<div class="cover-photo"><img src="${esc(COVER)}" alt="" decoding="async" draggable="false"></div>` : ''}<div class="cover-title"><small>OUR STORY</small>${esc(SITE.name || 'Habiba')}</div></div>`;
+        if (f.type === 'cover') return `<div class="face3d cover ${side}"><div class="cover-stitch"></div>${COVER ? `<div class="cover-photo"><img src="${esc(COVER)}" alt="" decoding="async" draggable="false"></div>` : ''}<div class="cover-title"><small>OUR STORY</small><bdi dir="ltr" class="nm">${esc(SITE.name || 'Habiba')}</bdi></div></div>`;
         if (f.type === 'backcover') return `<div class="face3d cover ${side}"><div class="cover-stitch"></div><div class="cover-heart">♡</div></div>`;
         if (f.type === 'endpaper') return `<div class="face3d endpaper ${side}"></div>`;
         num++;
         const n = `<span class="bk-num">${num}</span>`;
-        if (f.type === 'dedication') return `<div class="face3d ${side}"><div class="bk-text">${esc(BOOK_DEDICATION.line)}<b>${esc(BOOK_DEDICATION.name)}</b></div>${n}</div>`;
+        if (f.type === 'dedication') return `<div class="face3d ${side}"><div class="bk-text">${esc(BOOK_DEDICATION.line)}<b><bdi class="nm">${esc(BOOK_DEDICATION.name)}</bdi></b></div>${n}</div>`;
         if (f.type === 'end') return `<div class="face3d ${side}"><div class="bk-text">${esc(BOOK_ENDING)}<b>♡</b></div>${n}</div>`;
         if (f.type === 'note') return `<div class="face3d ${side}"><div class="bk-note">${f.text ? `<p>${esc(f.text)}</p>` : ''}${heartSvg}</div>${n}</div>`;
         const tilt = [-1.6, 1.2, -0.8, 1.8, -1.2][f.idx % 5];
@@ -1170,7 +1171,16 @@
       const name = SITE.name; if (!name || name === 'Habiba') return;
       const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
       const nodes = []; while (w.nextNode()) if (w.currentNode.nodeValue.includes('Habiba')) nodes.push(w.currentNode);
-      nodes.forEach(n => n.nodeValue = n.nodeValue.replace(/Habiba/g, name));
+      // الاسم بيتحط في عزل اتجاه (bdi) عشان الإيموجي تفضل دايماً قبل BoBa زي ما هي مكتوبة، حتى جوه كلام عربي
+      nodes.forEach(n => {
+        if (n.parentElement && n.parentElement.closest('title, script, style')) { n.nodeValue = n.nodeValue.replace(/Habiba/g, name); return; }
+        const frag = document.createDocumentFragment();
+        n.nodeValue.split('Habiba').forEach((part, i) => {
+          if (i) { const b = document.createElement('bdi'); b.dir = 'ltr'; b.className = 'nm'; b.textContent = name; frag.appendChild(b); }
+          if (part) frag.appendChild(document.createTextNode(part));
+        });
+        n.replaceWith(frag);
+      });
       document.title = document.title.replace(/Habiba/g, name);
     })();
 
