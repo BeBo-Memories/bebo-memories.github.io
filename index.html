@@ -305,10 +305,10 @@
       transform: rotateX(16deg); transition: transform .9s cubic-bezier(.22,1,.36,1); }
     .book3d.closed-front { transform: rotateX(16deg) translateX(calc(var(--pw) * .5)); }
     .book3d.closed-back { transform: rotateX(16deg) translateX(calc(var(--pw) * -.5)); }
-    .book-shadow { position: absolute; left: 4%; right: 4%; bottom: -30px; height: 40px; border-radius: 50%; background: rgba(60,30,30,.28); filter: blur(14px); transform: translateZ(-40px); }
-    .book3d.closed-front .book-shadow { right: 52%; }
-    .book3d.closed-back .book-shadow { left: 52%; }
-    .book-shadow { transition: left .9s, right .9s; }
+    .book-shadow { position: absolute; left: 0; width: 100%; bottom: -34px; height: 48px; border-radius: 50%; background: radial-gradient(closest-side, rgba(60,30,30,.30), rgba(60,30,30,0)); transform: translateZ(-40px); transform-origin: 0 50%; }
+    .book3d.closed-front .book-shadow { transform: translateZ(-40px) scaleX(.5); }
+    .book3d.closed-back .book-shadow { transform: translateZ(-40px) translateX(50%) scaleX(.5); }
+    .book-shadow { transition: transform .9s cubic-bezier(.22,1,.36,1); }
     .book-stack { position: absolute; top: 0; bottom: 0; width: 50%; transform: translateZ(-2px); border-radius: 4px; background: #F4ECE2; transition: box-shadow .6s; }
     .book-stack.left { left: 0; border-radius: 6px 2px 2px 6px; }
     .book-stack.right { right: 0; border-radius: 2px 6px 6px 2px; }
@@ -335,8 +335,8 @@
     .cover-heart { position: relative; margin-top: 14px; font-size: clamp(16px, 4vw, 26px); }
     .book-stage, .book3d, .leaf3d { touch-action: pan-y; }
     /* صفحة الموبايل وهي بتتقلب: ضل ناعم وانحناءة خفيفة */
-    .leaf3d.flipping .face3d.front { background-image: linear-gradient(270deg, rgba(60,30,20,.28), rgba(60,30,20,0) 40%), url(assets/paper.webp); background-size: auto, 256px; }
-    .leaf3d.flipping .face3d.back { background-image: linear-gradient(90deg, rgba(60,30,20,.28), rgba(60,30,20,0) 40%), url(assets/paper.webp); background-size: auto, 256px; }
+    .leaf3d.flipping .face3d.front:not(.cover):not(.endpaper) { background-image: linear-gradient(270deg, rgba(60,30,20,.28), rgba(60,30,20,0) 40%), url(assets/paper.webp); background-size: auto, 256px; }
+    .leaf3d.flipping .face3d.back:not(.cover):not(.endpaper) { background-image: linear-gradient(90deg, rgba(60,30,20,.28), rgba(60,30,20,0) 40%), url(assets/paper.webp); background-size: auto, 256px; }
     /* ===== الكتاب: ورق حقيقي + جلد ===== */
     .face3d { background-color: #FBF6EC; }
     .face3d.front { background-image: linear-gradient(270deg, rgba(110,70,40,.22), rgba(110,70,40,.06) 5%, rgba(110,70,40,0) 14%), linear-gradient(90deg, rgba(90,60,30,.10), transparent 4%), url(assets/paper.webp); background-size: auto, auto, 256px; }
@@ -377,9 +377,10 @@
       background-size: 250% 100%; background-position: 120% 0; }
     .book3d.closed-front .face3d.cover.front::before { opacity: 1; animation: coverShine 4.2s ease-in-out 1.2s infinite; }
     @keyframes coverShine { 0% { background-position: 120% 0; } 45%, 100% { background-position: -40% 0; } }
-    .book-stage:has(.closed-front) { animation: bookFloat 4.2s ease-in-out infinite; }
+    .book-stage { animation: bookFloat 4.2s ease-in-out infinite; animation-play-state: paused; }
+    .book-stage:has(.closed-front) { animation-play-state: running; }
     @keyframes bookFloat { 0%, 100% { translate: 0 0; } 50% { translate: 0 -7px; } }
-    .book3d.closed-front .leaf3d:hover { filter: brightness(1.04); }
+    .book3d.closed-front .leaf3d:hover .face3d.cover.front { filter: brightness(1.05); }
     /* زرار الأغنية */
     #music-btn { position: fixed; z-index: 70; left: max(16px, env(safe-area-inset-left)); bottom: max(16px, env(safe-area-inset-bottom)); width: 48px; height: 48px; border-radius: 50%;
       border: 1px solid rgba(212,175,55,.55); background: rgba(255,252,248,.82); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); color: #C83E5B;
@@ -1076,7 +1077,7 @@
         prev.disabled = turned === 0; next.disabled = turned === nLeaves;
         const settle = () => { leaf.classList.add('snap'); leaf.classList.toggle('turned', toT); void leaf.offsetWidth; leaf.classList.remove('snap'); busy = false; layout(); };
         if (reduceMotion) settle();
-        else if (coarsePointer) {   // على الموبايل: الورقة بتتقلب قطعة واحدة ناعمة من غير شرايح (مفيش خطوط)
+        else if (coarsePointer || leaf === leaves[0] || leaf === leaves[nLeaves - 1]) {   // الغلاف الجلد بيتقلب قطعة واحدة (زي الكتاب الحقيقي)، وعلى الموبايل كل الصفحات كده —: الورقة بتتقلب قطعة واحدة ناعمة من غير شرايح (مفيش خطوط)
           leaf.classList.add('flipping'); leaf.classList.toggle('turned', toT);
           setTimeout(() => { leaf.classList.remove('flipping'); busy = false; layout(); }, 1150);
         } else curl(leaf, toT, settle);
