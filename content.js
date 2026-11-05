@@ -90,10 +90,9 @@ window.SITE = {
 
   /* أسباب بحبك */
   reasons: [
-    { photo: "photos/img-18.jpg", title: "FOREVER TOGETHER", text: "كل صورة لينا جواها حكاية عمرها ما تتنسي أبداً 🌸" },
-    { photo: "photos/whatsapp-image-2026-10-27-at-12-32-52-am-mvwvnbkpd5s.jpg", title: "", text: "" },
-    { photo: "photos/img-22-mvwvnitb441.jpg", title: "", text: "" },
-    { photo: "photos/whatsapp-image-2026-10-31-at-12-30-39-pm-mvwvoeiyepm.jpg", title: "", text: "" },
+    { photo: "photos/img-18.jpg", title: "Forever Toghter", text: "بموت فيكي يحبيبت قلبيييييي♥️♥️♥️♥️" },
+    { photo: "photos/whatsapp-image-2026-10-27-at-12-32-52-am-mvwvnbkpd5s.jpg", title: "So proud of You", text: "سبحان الله ازاي كل الجمال والشطاره دول متجمعينن ف شخص واحددد♥️♥️♥️♥️♥️♥️" },
+    { photo: "photos/img-22-mvwvnitb441.jpg", title: "the most beautiful girl my eyes have ever seen.", text: "بحبكك و بحب ملامحكك اوووي يخربيتت جمالكك ♥️♥️♥️♥️" },
   ],
 
   /* الرسالة اللي في الظرف */
