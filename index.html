@@ -178,6 +178,24 @@
     .lt-mono span { color: #C83E5B; font-style: normal; font-size: 14px; vertical-align: middle; }
     .lt-hello { direction: ltr; text-align: left; font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 600; font-size: clamp(17px, 5vw, 23px); color: #C83E5B; margin: 6px 0 6px; }
     .lt-line { font-family: 'Aref Ruqaa', 'Amiri', serif; font-size: clamp(12.5px, 3.6vw, 16px); line-height: 1.8; margin: 0 0 4px; }
+    /* ريكورد بصوتي جوه الجواب */
+    .lt-voice { pointer-events: auto; direction: rtl; display: flex; align-items: center; gap: 12px; margin: 20px 0 6px; padding: 10px 14px 10px 10px;
+      border-radius: 999px; background: linear-gradient(180deg, rgba(255,255,255,.75), rgba(250,236,232,.85)); border: 1px solid rgba(200,62,91,.22);
+      box-shadow: 0 6px 18px rgba(200,62,91,.12), inset 0 1px 0 #fff; }
+    .lv-play { flex: none; width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center; cursor: pointer; color: #fff;
+      background: radial-gradient(circle at 35% 30%, #E25A78, #B8324F 70%); box-shadow: 0 6px 14px rgba(184,50,79,.4), inset 0 1px 0 rgba(255,255,255,.35);
+      transition: transform .2s ease; -webkit-tap-highlight-color: transparent; }
+    .lv-play:active { transform: scale(.92); }
+    .lv-play svg { width: 18px; height: 18px; }
+    .lv-play .ic-pause { display: none; } .lt-voice.playing .ic-play { display: none; } .lt-voice.playing .ic-pause { display: block; }
+    .lv-body { flex: 1; min-width: 0; }
+    .lv-label { font-size: 13px; line-height: 1.35; color: #8E4A5A; margin-bottom: 5px; }
+    .lv-wave { display: flex; align-items: center; gap: 2px; height: 26px; cursor: pointer; direction: ltr; }
+    .lv-wave i { flex: 1; min-width: 2px; border-radius: 2px; background: rgba(200,62,91,.28); transition: background .2s; }
+    .lv-wave i.on { background: #C83E5B; }
+    .lt-voice.playing .lv-wave i.on:last-of-type { }
+    .lv-time { flex: none; font-size: 12px; color: #9A7A80; font-variant-numeric: tabular-nums; direction: ltr; min-width: 34px; text-align: center; }
+    .lt-content:has(.lt-voice) { padding-bottom: calc(var(--eh) * .6 + 90px); }
     .lt-sign { direction: ltr; text-align: left; margin-top: 10px; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 20px; color: #8E6E73; }
 
     /* الصفحة وهي بتتني */
@@ -790,7 +808,9 @@
     (function fillLetter() {
       const L = SITE.letter; const box = document.querySelector('.lt-content'); if (!L || !box) return;
       box.innerHTML = `<div class="lt-mono">${esc(SITE.initial || 'H')} <span>♡</span></div><div class="lt-hello">${esc(L.hello || '')}</div>` +
-        (L.lines || []).map(t => `<p class="lt-line">${esc(t)}</p>`).join('') + `<div class="lt-sign">${esc(L.sign || '')}</div>`;
+        (L.lines || []).map(t => `<p class="lt-line">${esc(t)}</p>`).join('') +
+        (L.voice ? `<div class="lt-voice" id="lt-voice"><button type="button" class="lv-play" aria-label="شغّلي الريكورد"><svg class="ic-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l11-6.5a1 1 0 0 0 0-1.72l-11-6.5A1 1 0 0 0 8 5.5z"/></svg><svg class="ic-pause" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1.2"/><rect x="14" y="5" width="4" height="14" rx="1.2"/></svg></button>` +
+          `<div class="lv-body"><div class="lv-label">${esc(L.voiceLabel || 'اسمعي صوتي ♡')}</div><div class="lv-wave">${Array.from({ length: 34 }, (_, i) => `<i style="height:${Math.round(28 + 62 * Math.abs(Math.sin(i * 1.7) * Math.cos(i * .43)))}%"></i>`).join('')}</div></div><span class="lv-time">0:00</span></div>` : '') + `<div class="lt-sign">${esc(L.sign || '')}</div>`;
       const seal = document.querySelector('#lt-seal span'); if (seal) seal.textContent = SITE.initial || 'H';
     })();
 
@@ -1313,7 +1333,7 @@
       const stage = document.getElementById('lt-stage'); if (!stage) return;
       const env = document.getElementById('lt-env'), seal = document.getElementById('lt-seal'), letterEl = document.getElementById('lt-letter');
       const flap = env.querySelector('.lt-env-flap'), to = env.querySelector('.lt-env-to');
-      const lines = [...letterEl.querySelectorAll('.lt-mono, .lt-hello, .lt-line, .lt-sign')];
+      const lines = [...letterEl.querySelectorAll('.lt-mono, .lt-hello, .lt-line, .lt-sign, .lt-voice')];
       let opened = false, rise = 0;
       // اللي تحت قاع الظرف دايماً مستخبي (الرسالة جوه الظرف)
       const clipAt = dy => `inset(-60px -60px ${Math.max(0, letterEl.offsetTop + letterEl.offsetHeight + dy - env.offsetHeight + 2)}px -60px)`;
@@ -1447,6 +1467,28 @@
     function unduck() { if (ducked) { ducked = false; playSong(); } }
     // لو قفلتي الصفحة أو روحتي تطبيق تاني الأغنية بتقف، ولما ترجعي بتكمّل
     document.addEventListener('visibilitychange', () => { if (!song || !musicStarted) return; if (document.hidden) song.pause(); else if (musicOn && !ducked) playSong(); });
+    // ريكورد الصوت اللي في آخر الجواب — الأغنية بتسكت وهو شغال وبترجع بعده
+    (function voiceNote() {
+      const box = document.getElementById('lt-voice'); if (!box || !SITE.letter || !SITE.letter.voice) return;
+      const a = new Audio(); a.preload = 'metadata'; a.src = SITE.letter.voice;
+      const bars = [...box.querySelectorAll('.lv-wave i')], time = box.querySelector('.lv-time');
+      const fmt = t => { t = Math.max(0, Math.round(t || 0)); return Math.floor(t / 60) + ':' + String(t % 60).padStart(2, '0'); };
+      a.addEventListener('loadedmetadata', () => { time.textContent = fmt(a.duration); });
+      function paint() { const p = a.duration ? a.currentTime / a.duration : 0; const n = Math.round(p * bars.length); bars.forEach((b, i) => b.classList.toggle('on', i < n)); time.textContent = fmt(a.paused && !a.currentTime ? a.duration : a.currentTime); }
+      a.addEventListener('timeupdate', paint);
+      a.addEventListener('play', () => { box.classList.add('playing'); if (song && musicStarted && musicOn && !song.paused) { ducked = true; fadeTo(0, 300); } });
+      let byVideo = false;
+      const stop = () => { box.classList.remove('playing'); if (!byVideo) unduck(); byVideo = false; };
+      a.addEventListener('pause', stop);
+      a.addEventListener('ended', () => { a.currentTime = 0; paint(); stop(); });
+      box.querySelector('.lv-play').addEventListener('click', e => { e.stopPropagation(); a.paused ? a.play().catch(() => {}) : a.pause(); });
+      box.querySelector('.lv-wave').addEventListener('click', e => { e.stopPropagation(); const r = e.currentTarget.getBoundingClientRect();
+        const go = () => { a.currentTime = Math.min(a.duration - .1, Math.max(0, (e.clientX - r.left) / r.width * a.duration)); paint(); if (a.paused) a.play().catch(() => {}); };
+        a.duration ? go() : a.addEventListener('loadedmetadata', go, { once: true }); });
+      document.addEventListener('visibilitychange', () => { if (document.hidden) a.pause(); });
+      // لو فيديو اشتغل بالصوت الريكورد يقف
+      document.addEventListener('play', e => { if (e.target.tagName === 'VIDEO' && !e.target.muted && !a.paused) { byVideo = true; a.pause(); } }, true);
+    })();
     function showTillEnd() {
       const endBox = document.getElementById('till-the-end-box');
       endBox.classList.remove('hidden'); endBox.classList.add('flex'); revealTillEnd(endBox);
