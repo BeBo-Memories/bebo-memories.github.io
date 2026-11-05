@@ -179,22 +179,24 @@
     .lt-hello { direction: ltr; text-align: left; font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 600; font-size: clamp(17px, 5vw, 23px); color: #C83E5B; margin: 6px 0 6px; }
     .lt-line { font-family: 'Aref Ruqaa', 'Amiri', serif; font-size: clamp(12.5px, 3.6vw, 16px); line-height: 1.8; margin: 0 0 4px; }
     /* ريكورد بصوتي جوه الجواب */
-    .lt-voice { pointer-events: auto; direction: rtl; display: flex; align-items: center; gap: 12px; margin: 20px 0 6px; padding: 10px 14px 10px 10px;
+    .lt-voice { pointer-events: auto; direction: rtl; display: flex; align-items: center; gap: 10px; margin: 20px 0 6px; padding: 9px 14px 9px 9px;
       border-radius: 999px; background: linear-gradient(180deg, rgba(255,255,255,.75), rgba(250,236,232,.85)); border: 1px solid rgba(200,62,91,.22);
       box-shadow: 0 6px 18px rgba(200,62,91,.12), inset 0 1px 0 #fff; }
-    .lv-play { flex: none; width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center; cursor: pointer; color: #fff;
+    .lv-play { flex: none; width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; cursor: pointer; color: #fff;
       background: radial-gradient(circle at 35% 30%, #E25A78, #B8324F 70%); box-shadow: 0 6px 14px rgba(184,50,79,.4), inset 0 1px 0 rgba(255,255,255,.35);
       transition: transform .2s ease; -webkit-tap-highlight-color: transparent; }
     .lv-play:active { transform: scale(.92); }
     .lv-play svg { width: 18px; height: 18px; }
     .lv-play .ic-pause { display: none; } .lt-voice.playing .ic-play { display: none; } .lt-voice.playing .ic-pause { display: block; }
     .lv-body { flex: 1; min-width: 0; }
-    .lv-label { font-size: 13px; line-height: 1.35; color: #8E4A5A; margin-bottom: 5px; }
+    .lv-label { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 15px; line-height: 1.2; color: #8E4A5A; min-width: 0; overflow: hidden; text-overflow: ellipsis; text-align: right; unicode-bidi: plaintext; white-space: nowrap; }
     .lv-wave { display: flex; align-items: center; gap: 2px; height: 26px; cursor: pointer; direction: ltr; }
     .lv-wave i { flex: 1; min-width: 2px; border-radius: 2px; background: rgba(200,62,91,.28); transition: background .2s; }
     .lv-wave i.on { background: #C83E5B; }
     .lt-voice.playing .lv-wave i.on:last-of-type { }
-    .lv-time { flex: none; font-size: 12px; color: #9A7A80; font-variant-numeric: tabular-nums; direction: ltr; min-width: 34px; text-align: center; }
+    .lv-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin-bottom: 4px; }
+    .lv-time { flex: none; font-size: 11px; color: #9A7A80; font-variant-numeric: tabular-nums; direction: ltr; }
+    .lt-voice { position: relative; }
     .lt-content:has(.lt-voice) { padding-bottom: calc(var(--eh) * .6 + 90px); }
     .lt-sign { direction: ltr; text-align: left; margin-top: 10px; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 20px; color: #8E6E73; }
 
@@ -810,7 +812,7 @@
       box.innerHTML = `<div class="lt-mono">${esc(SITE.initial || 'H')} <span>♡</span></div><div class="lt-hello">${esc(L.hello || '')}</div>` +
         (L.lines || []).map(t => `<p class="lt-line">${esc(t)}</p>`).join('') +
         (L.voice ? `<div class="lt-voice" id="lt-voice"><button type="button" class="lv-play" aria-label="شغّلي الريكورد"><svg class="ic-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l11-6.5a1 1 0 0 0 0-1.72l-11-6.5A1 1 0 0 0 8 5.5z"/></svg><svg class="ic-pause" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1.2"/><rect x="14" y="5" width="4" height="14" rx="1.2"/></svg></button>` +
-          `<div class="lv-body"><div class="lv-label" dir="auto">${esc(L.voiceLabel || 'اسمعي صوتي ♡')}</div><div class="lv-wave">${Array.from({ length: 34 }, (_, i) => `<i style="height:${Math.round(28 + 62 * Math.abs(Math.sin(i * 1.7) * Math.cos(i * .43)))}%"></i>`).join('')}</div></div><span class="lv-time">0:00</span></div>` : '') + `<div class="lt-sign">${esc(L.sign || '')}</div>`;
+          `<div class="lv-body"><div class="lv-head"><div class="lv-label">${esc(L.voiceLabel || 'اسمعي صوتي ♡')}</div><span class="lv-time">0:00</span></div><div class="lv-wave">${Array.from({ length: 34 }, (_, i) => `<i style="height:${Math.round(28 + 62 * Math.abs(Math.sin(i * 1.7) * Math.cos(i * .43)))}%"></i>`).join('')}</div></div></div>` : '') + `<div class="lt-sign">${esc(L.sign || '')}</div>`;
       const seal = document.querySelector('#lt-seal span'); if (seal) seal.textContent = SITE.initial || 'H';
     })();
 
