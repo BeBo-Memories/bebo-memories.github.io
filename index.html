@@ -133,24 +133,37 @@
 
     /* ================= الجواب: ظرف ورق حقيقي + ختم شمع + رسالة بتطلع منه ================= */
     .lt-stage { --env-paper: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .45  0 0 0 0 .35  0 0 0 0 .3  0 0 0 .13 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); --letter-paper: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .45  0 0 0 0 .35  0 0 0 0 .3  0 0 0 .13 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); --ew: min(360px, 86vw); --eh: calc(var(--ew) * .64); position: relative; width: 100%; height: var(--stage-h, calc(var(--eh) + 40px));
-      display: flex; align-items: flex-end; justify-content: center; padding-bottom: 20px; perspective: 1400px; transition: height 1.2s cubic-bezier(.6,0,.2,1); }
-    .lt-env { position: relative; width: var(--ew); height: var(--eh); transform-style: preserve-3d; cursor: pointer;
-      filter: drop-shadow(0 22px 26px rgba(70,35,30,.2)) drop-shadow(0 3px 5px rgba(70,35,30,.12)); }
+      display: flex; align-items: flex-end; justify-content: center; padding-bottom: 20px; perspective: 1400px; }
+    .lt-env { position: relative; width: var(--ew); height: var(--eh); transform-style: preserve-3d; cursor: pointer; }
+    .lt-env::before { content: ""; position: absolute; left: 4%; right: 4%; bottom: -14px; height: 40px; z-index: 0; border-radius: 50%;
+      background: radial-gradient(ellipse at center, rgba(120,50,55,.28), rgba(120,50,55,0) 70%); pointer-events: none; }
+    .lt-env::after { content: ""; position: absolute; inset: 0; z-index: 0; border-radius: 6px; pointer-events: none;
+      box-shadow: 0 18px 30px -12px rgba(110,45,50,.35), 0 2px 4px rgba(110,45,50,.12); }
     .lt-env:focus-visible { outline: 2px solid #C83E5B; outline-offset: 8px; border-radius: 6px; }
     .lt-env-back, .lt-env-pocket, .lt-flap-out, .lt-flap-in { position: absolute; inset: 0; border-radius: 5px; }
-    .lt-env-back { z-index: 1; background: var(--env-paper), linear-gradient(180deg, #E3CDC1, #EAD8CD); }
-    .lt-env-pocket { z-index: 4; background: var(--env-paper), linear-gradient(180deg, #F3E5DB, #EEDCD0);
+    .lt-env-back { z-index: 1; border-radius: 6px; background:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='26'%3E%3Cpath d='M13 18.5l-.9-.8C8.9 14.8 7 13.1 7 11.1 7 9.4 8.3 8.2 9.9 8.2c.9 0 1.8.4 2.4 1.1.6-.7 1.5-1.1 2.4-1.1 1.6 0 2.9 1.2 2.9 2.9 0 2-1.9 3.7-5.1 6.6z' fill='%23C9A24E' fill-opacity='.38'/%3E%3C/svg%3E") 0 0/26px 26px,
+      linear-gradient(180deg, #FBF3EC, #F4E4DA 60%, #E2B9B3); }
+    .lt-env-pocket { z-index: 4; border-radius: 6px; background: var(--env-paper),
+        linear-gradient(to top right, rgba(255,255,255,0) 49.6%, rgba(150,70,75,.10) 50%, rgba(255,255,255,0) 58%),
+        linear-gradient(to top left, rgba(255,255,255,0) 49.6%, rgba(150,70,75,.10) 50%, rgba(255,255,255,0) 58%),
+        linear-gradient(180deg, #F2D2CC, #EAC0BA 70%, #E3B3AD);
       clip-path: polygon(0 0, 50% 54%, 100% 0, 100% 100%, 0 100%); }
+    .lt-env-pocket::after { content: ""; position: absolute; inset: 9px; border: 1px solid rgba(201,162,78,.75); border-radius: 3px;
+      box-shadow: inset 0 0 0 3px rgba(255,255,255,0), inset 0 0 0 4px rgba(201,162,78,.35); pointer-events: none; }
     .lt-env-pocket::before { content: ""; position: absolute; inset: 0;
-      background: linear-gradient(to top right, transparent 49.7%, rgba(120,70,60,.14) 50%, transparent 50.5%),
-                  linear-gradient(to top left, transparent 49.7%, rgba(120,70,60,.14) 50%, transparent 50.5%),
-                  linear-gradient(180deg, rgba(255,255,255,.18), transparent 40%); }
+      background: linear-gradient(to top right, transparent 49.75%, rgba(201,162,78,.85) 50%, transparent 50.35%),
+                  linear-gradient(to top left, transparent 49.75%, rgba(201,162,78,.85) 50%, transparent 50.35%),
+                  linear-gradient(180deg, rgba(255,255,255,.25), transparent 45%); }
     .lt-env-flap { position: absolute; left: 0; top: 0; width: 100%; height: 60%; z-index: 5; transform-origin: 50% 0; transform-style: preserve-3d; }
-    .lt-flap-out { backface-visibility: hidden; clip-path: polygon(0 0, 100% 0, 50% 100%); background: var(--env-paper), linear-gradient(180deg, #F2E3D9, #E6D2C6); }
+    .lt-flap-out { backface-visibility: hidden; clip-path: polygon(0 0, 100% 0, 50% 100%); background: linear-gradient(160deg, #E9CB7E, #C9A24E 45%, #E8C977); }
+    .lt-flap-out::before { content: ""; position: absolute; inset: 0; clip-path: polygon(1.6% 0, 98.4% 0, 50% 96.5%);
+      background: var(--env-paper), radial-gradient(120% 90% at 50% 0%, #F6DCD6, #EBC3BC 60%, #E2B2AC); }
     .lt-flap-in { transform: rotateX(180deg); backface-visibility: hidden; clip-path: polygon(0 100%, 100% 100%, 50% 0);
-      background: repeating-linear-gradient(45deg, rgba(200,62,91,.14) 0 6px, transparent 6px 14px), #F7EAEE; }
-    .lt-env-to { position: absolute; left: 0; right: 0; bottom: 15%; z-index: 6; text-align: center; font-family: 'Cormorant Garamond', serif; font-style: italic;
-      font-size: clamp(18px, 6vw, 24px); color: #7A4A50; opacity: .85; pointer-events: none; transition: opacity .6s; }
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='26'%3E%3Cpath d='M13 18.5l-.9-.8C8.9 14.8 7 13.1 7 11.1 7 9.4 8.3 8.2 9.9 8.2c.9 0 1.8.4 2.4 1.1.6-.7 1.5-1.1 2.4-1.1 1.6 0 2.9 1.2 2.9 2.9 0 2-1.9 3.7-5.1 6.6z' fill='%23C9A24E' fill-opacity='.45'/%3E%3C/svg%3E") 0 0/26px 26px, linear-gradient(0deg, #FBF3EC, #F3E2D8); }
+    .lt-env-to { position: absolute; left: 0; right: 0; bottom: 8%; z-index: 6; text-align: center; font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 600;
+      font-size: clamp(17px, 5.4vw, 22px); color: #8A5A2E; letter-spacing: .02em; pointer-events: none; transition: opacity .6s;
+      text-shadow: 0 1px 0 rgba(255,240,220,.7); }
     .lt-seal { position: absolute; left: 50%; top: 60%; width: 56px; height: 56px; margin: -28px 0 0 -28px; z-index: 7; border-radius: 50%;
       background: radial-gradient(circle at 36% 32%, #E2566A 0 8%, #B32237 30%, #7C0F22 72%, #5C0918 100%);
       box-shadow: 0 3px 6px rgba(60,10,20,.45), inset 0 -3px 6px rgba(0,0,0,.35), inset 0 2px 3px rgba(255,180,190,.35);
@@ -163,7 +176,10 @@
     .lt-env:hover .lt-seal { transform: scale(1.06) rotate(-4deg); }
 
     /* الرسالة: ورق قطني بحواف مقطوعة باليد وإطار دهبي رفيع */
-    .lt-letter { position: absolute; left: 6%; width: 88%; top: 7px; z-index: 2; pointer-events: none; will-change: transform; }
+    /* اللي تحت قاع الظرف مستخبي بقص ثابت (أخف بكتير على الموبايل من clip-path متحرك) */
+    .lt-clip { position: absolute; left: -60px; right: -60px; top: -6000px; bottom: 2px; z-index: 2; overflow: hidden; pointer-events: none; }
+    .lt-clip-in { position: absolute; left: 60px; right: 60px; bottom: -2px; height: var(--eh); }
+    .lt-letter { position: absolute; left: 6%; width: 88%; top: 7px; z-index: 2; pointer-events: none; will-change: transform; transform: translateZ(0); backface-visibility: hidden; }
     .lt-paper { position: relative; background: var(--letter-paper), linear-gradient(170deg, #FFFDF8, #F8F1E6);
       clip-path: polygon(0 1%, 4% 0, 9% .6%, 15% 0, 22% .8%, 30% .1%, 38% .7%, 46% 0, 54% .6%, 62% .1%, 70% .8%, 78% 0, 86% .7%, 93% .1%, 100% .9%,
         99.4% 8%, 100% 16%, 99.3% 25%, 100% 34%, 99.5% 43%, 100% 52%, 99.3% 61%, 100% 70%, 99.4% 79%, 100% 88%, 99.5% 96%, 100% 100%,
@@ -173,7 +189,7 @@
       background: linear-gradient(180deg, rgba(120,80,60,.05), transparent 20%, transparent 80%, rgba(120,80,60,.07)); }
     .lt-frame { position: absolute; inset: 12px; border: 1px solid rgba(196,160,98,.55); pointer-events: none; }
     .lt-frame::after { content: ""; position: absolute; inset: 4px; border: .6px solid rgba(196,160,98,.35); }
-    .lt-content { position: relative; padding: 26px 26px calc(var(--eh) * .6); direction: rtl; text-align: right; color: #3B2E32; }
+    .lt-content { position: relative; padding: 26px 26px calc(var(--eh) * .6 + 80px); direction: rtl; text-align: right; color: #3B2E32; }
     .lt-mono { text-align: center; font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 600; font-size: 22px; color: #B8963F; letter-spacing: .05em; }
     .lt-mono span { color: #C83E5B; font-style: normal; font-size: 14px; vertical-align: middle; }
     .lt-hello { direction: ltr; text-align: left; font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 600; font-size: clamp(17px, 5vw, 23px); color: #C83E5B; margin: 6px 0 6px; }
@@ -197,7 +213,6 @@
     .lv-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin-bottom: 4px; }
     .lv-time { flex: none; font-size: 11px; color: #9A7A80; font-variant-numeric: tabular-nums; direction: ltr; }
     .lt-voice { position: relative; }
-    .lt-content:has(.lt-voice) { padding-bottom: calc(var(--eh) * .6 + 90px); }
     .lt-sign { direction: ltr; text-align: left; margin-top: 10px; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 20px; color: #8E6E73; }
 
     /* الصفحة وهي بتتني */
@@ -429,6 +444,25 @@
     }
     .tilt-3d:hover .tilt-glare { opacity: 1; }
 
+    /* لوحة الأرقام: لمسة سريعة من غير تأخير أو زووم، ومن غير ميلان على الموبايل */
+    #passcode-card, #passcode-card button { touch-action: manipulation; -webkit-tap-highlight-color: transparent; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+    #passcode-card .kp { transition: transform .14s cubic-bezier(.2,.8,.2,1); }
+    #passcode-card .kp svg { transition: fill .2s, stroke .2s; }
+    #passcode-card .kp.press { transform: scale(.86); transition-duration: .05s; }
+    #passcode-card .kp.press svg { fill: #FDF2F4; stroke: #C83E5B; transition: none; }
+    #passcode-card .kp.press span { color: #C83E5B; }
+    @keyframes pinPop { 0% { transform: scale(.72); } 60% { transform: scale(1.14); } 100% { transform: scale(1.05); } }
+    .pin-pop { animation: pinPop .24s cubic-bezier(.2,.8,.2,1); }
+    @media (hover: none) {
+      .tilt-3d { transform: none !important; transform-style: flat; }
+      .tilt-3d .tilt-glare { display: none; }
+      .tilt-inner-depth { transform: none; }
+      #passcode-card .group:hover svg { fill: #FAF6F4; stroke: #E2D2D6; }
+      #passcode-card .group:hover span { color: #2C2225; }
+      #passcode-card .kp.press svg { fill: #FDF2F4; stroke: #C83E5B; }
+      #passcode-card .kp.press span { color: #C83E5B; }
+    }
+
     /* أنيميشن كسر القفل الـ 3D */
     @keyframes lockShake3D {
       0%, 100% { transform: translate3d(0,0,0) rotateZ(0); }
@@ -564,17 +598,17 @@
       <div dir="ltr" id="pin-boxes" class="tilt-inner-depth flex items-center gap-1.5 mb-6"></div>
 
       <div dir="ltr" class="tilt-inner-depth grid grid-cols-3 gap-y-2.5 gap-x-5 w-full max-w-[240px] justify-items-center">
-        <button onclick="typePin('1')" class="group relative w-14 h-14 flex items-center justify-center active:scale-90 transition"><svg class="w-12 h-12 fill-[#FAF6F4] stroke-[#E2D2D6] group-hover:fill-[#FDF2F4] group-hover:stroke-[#C83E5B] transition" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg><span class="absolute font-sans-lux text-sm font-semibold text-[#2C2225] group-hover:text-[#C83E5B]">1</span></button>
-        <button onclick="typePin('2')" class="group relative w-14 h-14 flex items-center justify-center active:scale-90 transition"><svg class="w-12 h-12 fill-[#FAF6F4] stroke-[#E2D2D6] group-hover:fill-[#FDF2F4] group-hover:stroke-[#C83E5B] transition" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg><span class="absolute font-sans-lux text-sm font-semibold text-[#2C2225] group-hover:text-[#C83E5B]">2</span></button>
-        <button onclick="typePin('3')" class="group relative w-14 h-14 flex items-center justify-center active:scale-90 transition"><svg class="w-12 h-12 fill-[#FAF6F4] stroke-[#E2D2D6] group-hover:fill-[#FDF2F4] group-hover:stroke-[#C83E5B] transition" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg><span class="absolute font-sans-lux text-sm font-semibold text-[#2C2225] group-hover:text-[#C83E5B]">3</span></button>
-        <button onclick="typePin('4')" class="group relative w-14 h-14 flex items-center justify-center active:scale-90 transition"><svg class="w-12 h-12 fill-[#FAF6F4] stroke-[#E2D2D6] group-hover:fill-[#FDF2F4] group-hover:stroke-[#C83E5B] transition" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg><span class="absolute font-sans-lux text-sm font-semibold text-[#2C2225] group-hover:text-[#C83E5B]">4</span></button>
-        <button onclick="typePin('5')" class="group relative w-14 h-14 flex items-center justify-center active:scale-90 transition"><svg class="w-12 h-12 fill-[#FAF6F4] stroke-[#E2D2D6] group-hover:fill-[#FDF2F4] group-hover:stroke-[#C83E5B] transition" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg><span class="absolute font-sans-lux text-sm font-semibold text-[#2C2225] group-hover:text-[#C83E5B]">5</span></button>
-        <button onclick="typePin('6')" class="group relative w-14 h-14 flex items-center justify-center active:scale-90 transition"><svg class="w-12 h-12 fill-[#FAF6F4] stroke-[#E2D2D6] group-hover:fill-[#FDF2F4] group-hover:stroke-[#C83E5B] transition" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg><span class="absolute font-sans-lux text-sm font-semibold text-[#2C2225] group-hover:text-[#C83E5B]">6</span></button>
-        <button onclick="typePin('7')" class="group relative w-14 h-14 flex items-center justify-center active:scale-90 transition"><svg class="w-12 h-12 fill-[#FAF6F4] stroke-[#E2D2D6] group-hover:fill-[#FDF2F4] group-hover:stroke-[#C83E5B] transition" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg><span class="absolute font-sans-lux text-sm font-semibold text-[#2C2225] group-hover:text-[#C83E5B]">7</span></button>
-        <button onclick="typePin('8')" class="group relative w-14 h-14 flex items-center justify-center active:scale-90 transition"><svg class="w-12 h-12 fill-[#FAF6F4] stroke-[#E2D2D6] group-hover:fill-[#FDF2F4] group-hover:stroke-[#C83E5B] transition" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg><span class="absolute font-sans-lux text-sm font-semibold text-[#2C2225] group-hover:text-[#C83E5B]">8</span></button>
-        <button onclick="typePin('9')" class="group relative w-14 h-14 flex items-center justify-center active:scale-90 transition"><svg class="w-12 h-12 fill-[#FAF6F4] stroke-[#E2D2D6] group-hover:fill-[#FDF2F4] group-hover:stroke-[#C83E5B] transition" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg><span class="absolute font-sans-lux text-sm font-semibold text-[#2C2225] group-hover:text-[#C83E5B]">9</span></button>
+        <button onclick="typePin('1')" class="kp group relative w-14 h-14 flex items-center justify-center"><svg class="w-12 h-12 fill-[#FAF6F4] stroke-[#E2D2D6] group-hover:fill-[#FDF2F4] group-hover:stroke-[#C83E5B] transition" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg><span class="absolute font-sans-lux text-sm font-semibold text-[#2C2225] group-hover:text-[#C83E5B]">1</span></button>
+        <button onclick="typePin('2')" class="kp group relative w-14 h-14 flex items-center justify-center"><svg class="w-12 h-12 fill-[#FAF6F4] stroke-[#E2D2D6] group-hover:fill-[#FDF2F4] group-hover:stroke-[#C83E5B] transition" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg><span class="absolute font-sans-lux text-sm font-semibold text-[#2C2225] group-hover:text-[#C83E5B]">2</span></button>
+        <button onclick="typePin('3')" class="kp group relative w-14 h-14 flex items-center justify-center"><svg class="w-12 h-12 fill-[#FAF6F4] stroke-[#E2D2D6] group-hover:fill-[#FDF2F4] group-hover:stroke-[#C83E5B] transition" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg><span class="absolute font-sans-lux text-sm font-semibold text-[#2C2225] group-hover:text-[#C83E5B]">3</span></button>
+        <button onclick="typePin('4')" class="kp group relative w-14 h-14 flex items-center justify-center"><svg class="w-12 h-12 fill-[#FAF6F4] stroke-[#E2D2D6] group-hover:fill-[#FDF2F4] group-hover:stroke-[#C83E5B] transition" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg><span class="absolute font-sans-lux text-sm font-semibold text-[#2C2225] group-hover:text-[#C83E5B]">4</span></button>
+        <button onclick="typePin('5')" class="kp group relative w-14 h-14 flex items-center justify-center"><svg class="w-12 h-12 fill-[#FAF6F4] stroke-[#E2D2D6] group-hover:fill-[#FDF2F4] group-hover:stroke-[#C83E5B] transition" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg><span class="absolute font-sans-lux text-sm font-semibold text-[#2C2225] group-hover:text-[#C83E5B]">5</span></button>
+        <button onclick="typePin('6')" class="kp group relative w-14 h-14 flex items-center justify-center"><svg class="w-12 h-12 fill-[#FAF6F4] stroke-[#E2D2D6] group-hover:fill-[#FDF2F4] group-hover:stroke-[#C83E5B] transition" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg><span class="absolute font-sans-lux text-sm font-semibold text-[#2C2225] group-hover:text-[#C83E5B]">6</span></button>
+        <button onclick="typePin('7')" class="kp group relative w-14 h-14 flex items-center justify-center"><svg class="w-12 h-12 fill-[#FAF6F4] stroke-[#E2D2D6] group-hover:fill-[#FDF2F4] group-hover:stroke-[#C83E5B] transition" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg><span class="absolute font-sans-lux text-sm font-semibold text-[#2C2225] group-hover:text-[#C83E5B]">7</span></button>
+        <button onclick="typePin('8')" class="kp group relative w-14 h-14 flex items-center justify-center"><svg class="w-12 h-12 fill-[#FAF6F4] stroke-[#E2D2D6] group-hover:fill-[#FDF2F4] group-hover:stroke-[#C83E5B] transition" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg><span class="absolute font-sans-lux text-sm font-semibold text-[#2C2225] group-hover:text-[#C83E5B]">8</span></button>
+        <button onclick="typePin('9')" class="kp group relative w-14 h-14 flex items-center justify-center"><svg class="w-12 h-12 fill-[#FAF6F4] stroke-[#E2D2D6] group-hover:fill-[#FDF2F4] group-hover:stroke-[#C83E5B] transition" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg><span class="absolute font-sans-lux text-sm font-semibold text-[#2C2225] group-hover:text-[#C83E5B]">9</span></button>
         <button onclick="clearPin()" class="text-xs text-[#8E7C81] hover:text-[#C83E5B] font-bold">مسح</button>
-        <button onclick="typePin('0')" class="group relative w-14 h-14 flex items-center justify-center active:scale-90 transition"><svg class="w-12 h-12 fill-[#FAF6F4] stroke-[#E2D2D6] group-hover:fill-[#FDF2F4] group-hover:stroke-[#C83E5B] transition" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg><span class="absolute font-sans-lux text-sm font-semibold text-[#2C2225] group-hover:text-[#C83E5B]">0</span></button>
+        <button onclick="typePin('0')" class="kp group relative w-14 h-14 flex items-center justify-center"><svg class="w-12 h-12 fill-[#FAF6F4] stroke-[#E2D2D6] group-hover:fill-[#FDF2F4] group-hover:stroke-[#C83E5B] transition" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg><span class="absolute font-sans-lux text-sm font-semibold text-[#2C2225] group-hover:text-[#C83E5B]">0</span></button>
         <button onclick="popPin()" class="text-xs text-[#8E7C81] hover:text-[#C83E5B]">⌫</button>
       </div>
 
@@ -680,7 +714,7 @@
             <div class="lt-env-back"></div>
             <div class="lt-env-flap"><div class="lt-flap-out"></div><div class="lt-flap-in"></div></div>
             <!-- الرسالة جوه الظرف -->
-            <div class="lt-letter" id="lt-letter">
+            <div class="lt-clip"><div class="lt-clip-in"><div class="lt-letter" id="lt-letter">
               <div class="lt-paper">
                 <div class="lt-frame"></div>
                 <div class="lt-content">
@@ -692,7 +726,7 @@
                   <div class="lt-sign">Forever Yours ♡</div>
                 </div>
               </div>
-            </div>
+            </div></div></div>
             <div class="lt-env-pocket"></div>
             <div class="lt-seal" id="lt-seal"><span>H</span></div>
             <div class="lt-env-to">For my Habiba</div>
@@ -1338,11 +1372,9 @@
       const lines = [...letterEl.querySelectorAll('.lt-mono, .lt-hello, .lt-line, .lt-sign, .lt-voice')];
       let opened = false, rise = 0;
       // اللي تحت قاع الظرف دايماً مستخبي (الرسالة جوه الظرف)
-      const clipAt = dy => `inset(-60px -60px ${Math.max(0, letterEl.offsetTop + letterEl.offsetHeight + dy - env.offsetHeight + 2)}px -60px)`;
       function rest() {
         rise = Math.max(0, letterEl.offsetHeight + letterEl.offsetTop - env.offsetHeight * .8);
-        letterEl.style.clipPath = clipAt(opened ? -rise : 0);
-        letterEl.style.transform = opened ? `translateY(${-rise}px)` : 'none';
+        letterEl.style.transform = opened ? `translate3d(0,${-rise}px,0)` : 'translateZ(0)';
         stage.style.setProperty('--stage-h', (opened ? env.offsetHeight + rise + 50 : env.offsetHeight + 40) + 'px');
       }
       lines.forEach(l => l.style.opacity = 0);
@@ -1364,15 +1396,16 @@
         await wait(420);
         // 3) الرسالة بتتسحب لفوق من جوه الظرف، والمكان بيكبر عشانها
         rise = Math.max(0, letterEl.offsetHeight + letterEl.offsetTop - env.offsetHeight * .8);
+        // المكان بيكبر مرة واحدة (من غير ما الصفحة تتحسب كل فريم)، وبعدين الرسالة بتطلع بحركة transform بس
         stage.style.setProperty('--stage-h', (env.offsetHeight + rise + 50) + 'px');
-        setTimeout(() => stage.scrollIntoView({ behavior: 'smooth', block: innerHeight < env.offsetHeight + rise + 90 ? 'end' : 'center' }), 250);
-        await letterEl.animate([{ transform: 'translateY(0)', clipPath: clipAt(0) }, { transform: `translateY(${-rise}px)`, clipPath: clipAt(-rise) }],
-          { duration: 1500, easing: 'cubic-bezier(.45,0,.15,1)', fill: 'forwards' }).finished;
-        letterEl.style.transform = `translateY(${-rise}px)`; letterEl.style.clipPath = clipAt(-rise);
+        setTimeout(() => stage.scrollIntoView({ behavior: 'smooth', block: innerHeight < env.offsetHeight + rise + 90 ? 'end' : 'center' }), 60);
+        await letterEl.animate([{ transform: 'translate3d(0,0,0)' }, { transform: `translate3d(0,${-rise}px,0)` }],
+          { duration: 1700, easing: 'cubic-bezier(.45,0,.15,1)', fill: 'forwards' }).finished;
+        letterEl.style.transform = `translate3d(0,${-rise}px,0)`;
         letterEl.getAnimations().forEach(a => a.cancel());
         // 4) الكلام بيظهر سطر ورا سطر
         lines.forEach((el, i) => {
-          el.animate([{ opacity: 0, transform: 'translateY(8px)', filter: 'blur(3px)' }, { opacity: 1, transform: 'none', filter: 'blur(0)' }],
+          el.animate([{ opacity: 0, transform: 'translateY(10px)' }, { opacity: 1, transform: 'none' }],
             { duration: 900, delay: i * 600, easing: 'cubic-bezier(.2,.8,.2,1)', fill: 'forwards' }).onfinish = () => { el.style.opacity = 1; };
         });
       }
@@ -1417,6 +1450,7 @@
         const box = document.getElementById(`digit-${i}`);
         box.innerText = pin[i] || "";
         if (pin[i]) {
+          if (i === pin.length - 1 && !box.classList.contains("scale-105")) { box.classList.remove("pin-pop"); void box.offsetWidth; box.classList.add("pin-pop"); }
           box.classList.add("border-[#C83E5B]", "bg-[#FDF2F4]", "scale-105");
         } else {
           box.classList.remove("border-[#C83E5B]", "bg-[#FDF2F4]", "scale-105");
@@ -1441,6 +1475,17 @@
     }
     function clearPin() { pin = ""; renderPin(); }
     function popPin() { pin = pin.slice(0, -1); renderPin(); }
+    // الأزرار بتستجيب أول ما الصباع يلمس (من غير تأخير الآيفون ولا زووم الضغطتين)
+    document.querySelectorAll('#passcode-card button[onclick]').forEach(b => {
+      const code = b.getAttribute('onclick'); b.removeAttribute('onclick');
+      const run = () => { if (code.startsWith('typePin')) typePin(code.match(/'(\d)'/)[1]); else if (code.startsWith('clearPin')) clearPin(); else popPin(); };
+      // الضغطة بتبان أول ما الصباع يلمس، والرقم بيتكتب مع الـ click (عشان فيديو البداية يقدر يشتغل بالصوت على الآيفون)
+      b.addEventListener('pointerdown', e => { if (e.button > 0) return; b.classList.add('press'); });
+      const up = () => setTimeout(() => b.classList.remove('press'), 90);
+      b.addEventListener('pointerup', up); b.addEventListener('pointerleave', up); b.addEventListener('pointercancel', up);
+      b.addEventListener('click', run);
+    });
+    document.getElementById('passcode-card').addEventListener('dblclick', e => e.preventDefault());
 
     // فيديو البداية — بيشتغل بالصوت أول ما الباسورد يتكتب صح
     const INTRO = (SITE.intro || {}).video || '';
