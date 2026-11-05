@@ -109,6 +109,6 @@ window.SITE = {
     sign: "Khalodaaa ♡",
     /* ريكورد بصوتك — بيظهر في آخر الجواب */
     voice: "music/voice.m4a",
-    voiceLabel: "اسمعي صوتي يحبيبتي ♡",
+    voiceLabel: "A message for you ♡",
   },
 };

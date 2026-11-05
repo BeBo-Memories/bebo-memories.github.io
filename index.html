@@ -810,7 +810,7 @@
       box.innerHTML = `<div class="lt-mono">${esc(SITE.initial || 'H')} <span>♡</span></div><div class="lt-hello">${esc(L.hello || '')}</div>` +
         (L.lines || []).map(t => `<p class="lt-line">${esc(t)}</p>`).join('') +
         (L.voice ? `<div class="lt-voice" id="lt-voice"><button type="button" class="lv-play" aria-label="شغّلي الريكورد"><svg class="ic-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l11-6.5a1 1 0 0 0 0-1.72l-11-6.5A1 1 0 0 0 8 5.5z"/></svg><svg class="ic-pause" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1.2"/><rect x="14" y="5" width="4" height="14" rx="1.2"/></svg></button>` +
-          `<div class="lv-body"><div class="lv-label">${esc(L.voiceLabel || 'اسمعي صوتي ♡')}</div><div class="lv-wave">${Array.from({ length: 34 }, (_, i) => `<i style="height:${Math.round(28 + 62 * Math.abs(Math.sin(i * 1.7) * Math.cos(i * .43)))}%"></i>`).join('')}</div></div><span class="lv-time">0:00</span></div>` : '') + `<div class="lt-sign">${esc(L.sign || '')}</div>`;
+          `<div class="lv-body"><div class="lv-label" dir="auto">${esc(L.voiceLabel || 'اسمعي صوتي ♡')}</div><div class="lv-wave">${Array.from({ length: 34 }, (_, i) => `<i style="height:${Math.round(28 + 62 * Math.abs(Math.sin(i * 1.7) * Math.cos(i * .43)))}%"></i>`).join('')}</div></div><span class="lv-time">0:00</span></div>` : '') + `<div class="lt-sign">${esc(L.sign || '')}</div>`;
       const seal = document.querySelector('#lt-seal span'); if (seal) seal.textContent = SITE.initial || 'H';
     })();
 
