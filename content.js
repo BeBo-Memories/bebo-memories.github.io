@@ -59,8 +59,8 @@ window.SITE = {
     { video: "videos/vid-26.mp4", poster: "photos/vid-26-cover.jpg", text: "فنانن " },
     { video: "videos/vid-28.mp4", poster: "photos/vid-28-cover.jpg", text: "اي الحلاوه و الطعامه دي يبوبتي " },
     { video: "videos/vid-31.mp4", poster: "photos/vid-31-cover.jpg", text: "الفيديو دا من اكتر الفيديوهات الي بحبها من قلبي بجد" },
-    { video: "videos/vid-33.mp4", poster: "photos/vid-33-cover.jpg", text: "" },
-    { video: "videos/vid-34.mp4", poster: "photos/vid-34-cover.jpg", text: "" },
+    { video: "videos/vid-33.mp4", poster: "photos/vid-33-cover.jpg", text: "فيديو دا هنعمل منه نسخخ كتير اوووي و كل نسخه هتكون احسن من الي قبلها باذن الله واحنا سوا " },
+    { video: "videos/vid-34.mp4", poster: "photos/vid-34-cover.jpg", text: "بعمل معاكي اكتر حاجه هرجع اندمم عليها بعد ما تمشي بجد (انا واثق فيكي اوووي و اني اشوفك ناجحه هيهون عليا اي حاجه الا بعدط بردو بصراحه )" },
   ],
 
   /* كتاب الذكريات */
