@@ -504,6 +504,29 @@
     .rcard img { -webkit-user-drag: none; user-select: none; }
 
     /* كارت "Together since" — عداد حي بالأيام والساعات والدقايق والثواني */
+    /* صورتها وهي صغيرة في شاشة Till the end */
+    #gate-screen.till-mode { padding-top: max(26px, env(safe-area-inset-top)); padding-bottom: 16px; }
+    #till-the-end-box button { white-space: nowrap; }
+    @media (max-width: 360px) { #till-the-end-box button { padding-left: 1.6rem; padding-right: 1.6rem; } }
+    #gate-screen.till-mode .gate-head { display: none; }
+    .little-frame { position: relative; width: min(46vw, 25vh, 210px); padding: 9px 9px 34px; margin-bottom: 18px; background: #FFFDF9; border-radius: 6px; rotate: -3deg;
+      box-shadow: 0 22px 40px -18px rgba(90,40,50,.45), 0 2px 5px rgba(90,40,50,.12); animation: lfFloat 5s ease-in-out infinite; }
+    .little-frame::before { content: ""; position: absolute; top: -12px; left: 50%; width: 70px; height: 22px; translate: -50% 0; rotate: 4deg;
+      background: linear-gradient(180deg, rgba(232,190,180,.85), rgba(222,170,160,.85)); box-shadow: 0 1px 2px rgba(0,0,0,.08); }
+    .lf-in { position: relative; aspect-ratio: 4 / 5; overflow: hidden; border-radius: 2px; box-shadow: inset 0 0 0 1px rgba(201,161,87,.55); }
+    .lf-in img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .lf-in::after { content: ""; position: absolute; inset: 0; box-shadow: inset 0 0 18px rgba(120,70,40,.18); pointer-events: none; }
+    .lf-cap { position: absolute; left: 0; right: 0; bottom: 8px; font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 600; font-size: 16px; color: #8E4A5A; }
+    @keyframes lfFloat { 0%, 100% { translate: 0 0; } 50% { translate: 0 -8px; } }
+    .tg-card.tg-compact { width: min(100%, 330px); padding: 18px 14px 14px; margin-bottom: 22px; }
+    .tg-compact .tg-date { font-size: 24px; }
+    .tg-compact .tg-div { margin: 8px auto 10px; }
+    .tg-compact .tg-u { padding: 8px 2px 7px; }
+    .tg-compact .tg-u b { height: 26px; font-size: 22px; }
+    .tg-compact .tg-u:first-child b { font-size: 25px; }
+    .tg-compact .tg-foot { margin-top: 9px; font-size: 13px; }
+    @media (max-height: 600px) { .little-frame { width: min(40vw, 21vh); } .tg-compact .tg-foot { display: none; } }
+    @media (max-height: 700px) { .little-frame { padding-bottom: 28px; margin-bottom: 12px; } .lf-cap { font-size: 13px; bottom: 6px; } #till-the-end-box h2 { font-size: 2rem; } #till-the-end-box > p { font-size: 1rem; margin-bottom: 12px; } .tg-card.tg-compact { margin-bottom: 14px; } }
     .tg-card { position: relative; width: min(100%, 360px); padding: 26px 18px 20px; border-radius: 28px; overflow: hidden; text-align: center;
       background: linear-gradient(180deg, rgba(255,255,255,.96), rgba(253,246,244,.94));
       box-shadow: 0 24px 50px -22px rgba(120,40,60,.35), 0 2px 6px rgba(120,40,60,.06), inset 0 1px 0 #fff; }
@@ -550,7 +573,7 @@
 
   <!-- ================= المرحلة الأولى: شاشة القفل الـ 3D باسم Habiba ================= -->
   <section id="gate-screen" class="fixed inset-0 z-40 flex flex-col items-center justify-center px-4 transition-all duration-700 overflow-y-auto pt-20 pb-8">
-    <div class="text-center mb-5 select-none relative z-10">
+    <div class="gate-head text-center mb-5 select-none relative z-10">
       <p class="font-sans-lux text-[10px] tracking-[0.3em] uppercase text-[#8E7C81] mb-1">
         A LITTLE WORLD MADE FOR YOU
       </p>
@@ -617,9 +640,23 @@
         <button id="intro-skip" class="intro-btn skip" dir="ltr" aria-label="كمّل" onclick="endIntro()"><svg viewBox="0 0 24 24" width="20" height="20" style="margin:auto"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
     </div>
 
-    <div id="till-the-end-box" class="hidden flex-col items-center text-center max-w-md px-6 py-10 relative z-10">
-      <h2 class="font-serif-lux italic text-5xl md:text-6xl text-[#C83E5B] mb-3">Till the end ♡</h2>
-      <p class="font-serif-lux italic text-xl text-[#8E7C81] mb-8">There's a whole world of our memories waiting inside…</p>
+    <div id="till-the-end-box" dir="ltr" class="hidden flex-col items-center text-center max-w-md px-4 py-4 relative z-10">
+      <div class="little-frame"><div class="lf-in"><img src="photos/little-boba.jpg" alt="" decoding="async" onerror="this.closest('.little-frame').remove()"></div><span class="lf-cap">my little princess ♡</span></div>
+      <h2 class="font-serif-lux italic text-4xl md:text-6xl text-[#C83E5B] mb-2">Till the end ♡</h2>
+      <p class="font-serif-lux italic text-lg text-[#8E7C81] mb-5">There's a whole world of our memories waiting inside…</p>
+          <div class="tg-card tg-compact" id="tg-card" dir="ltr">
+            <div class="tg-shine"></div>
+            <p class="tg-label">TOGETHER SINCE</p>
+            <p class="tg-date" id="tg-date"></p>
+            <div class="tg-div"><i></i><span>♥</span><i></i></div>
+            <div class="tg-grid">
+              <div class="tg-u"><b id="tg-d">0</b><small>DAYS</small></div>
+              <div class="tg-u"><b id="tg-h">00</b><small>HOURS</small></div>
+              <div class="tg-u"><b id="tg-m">00</b><small>MINUTES</small></div>
+              <div class="tg-u"><b id="tg-s">00</b><small>SECONDS</small></div>
+            </div>
+            <p class="tg-foot">and counting, forever ♡</p>
+      </div>
       <button onclick="openMainExperience()" class="px-9 py-4 rounded-full bg-gradient-to-r from-[#D14764] to-[#9E243F] text-white font-sans-lux text-xs tracking-[0.22em] uppercase shadow-[0_15px_35px_rgba(200,62,91,0.4)] hover:scale-105 transition">
         OPEN OUR MEMORIES →
       </button>
@@ -674,19 +711,6 @@
           <button onclick="switchDeck(1)" class="w-10 h-10 rounded-full border border-[#E2D2D6] bg-white text-[#2C2225] hover:border-[#C83E5B] hover:text-[#C83E5B] transition">→</button>
         </div>
 
-        <div class="tg-card" id="tg-card" data-fx="pop" dir="ltr">
-          <div class="tg-shine"></div>
-          <p class="tg-label">TOGETHER SINCE</p>
-          <p class="tg-date" id="tg-date"></p>
-          <div class="tg-div"><i></i><span>♥</span><i></i></div>
-          <div class="tg-grid">
-            <div class="tg-u"><b id="tg-d">0</b><small>DAYS</small></div>
-            <div class="tg-u"><b id="tg-h">00</b><small>HOURS</small></div>
-            <div class="tg-u"><b id="tg-m">00</b><small>MINUTES</small></div>
-            <div class="tg-u"><b id="tg-s">00</b><small>SECONDS</small></div>
-          </div>
-          <p class="tg-foot">and counting, forever ♡</p>
-        </div>
       </section>
 
       <!-- هـ. الجواب الأخير -->
@@ -1567,6 +1591,8 @@
     })();
     function showTillEnd() {
       const endBox = document.getElementById('till-the-end-box');
+      // العنوان اللي فوق بيختفي هنا عشان الصورة والعداد والزرار ياخدوا الشاشة كلها
+      const gate = document.getElementById('gate-screen'); gate.classList.add('till-mode');
       endBox.classList.remove('hidden'); endBox.classList.add('flex'); revealTillEnd(endBox);
     }
     function endIntro() {
