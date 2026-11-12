@@ -16,7 +16,7 @@ window.SITE = {
 
   /* الأغنية — بتبدأ لما تدوسي OPEN OUR MEMORIES */
   music: "music/song.mp3",
-  startDate: "2022-05-12",
+  startDate: "2023-02-28",
 
   /* حيطة الصور */
   wall: [
