@@ -15,7 +15,7 @@ window.SITE = {
   bookCover: "photos/vid-07-cover-mvwcc6e9yde.jpg",
 
   /* الأغنية — بتبدأ لما تدوسي OPEN OUR MEMORIES */
-  music: "music/song.mp3",
+  music: "music/hekayat.mp3",
   startDate: "2023-02-28",
 
   /* حيطة الصور */
