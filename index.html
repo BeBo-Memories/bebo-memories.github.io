@@ -250,15 +250,10 @@
     .paper .ph::after { content: ""; position: absolute; inset: 0; pointer-events: none;
       background: linear-gradient(125deg, rgba(255,255,255,.2) 0%, rgba(255,255,255,.05) 26%, rgba(255,255,255,0) 44%); box-shadow: inset 0 0 14px rgba(40,20,10,.12); }
     .paper .print { position: absolute; left: var(--gl); top: var(--gt); width: var(--gw); max-width: none; height: auto; pointer-events: none; user-select: none; }
-    .paper .cap { position: absolute; left: 5%; right: 5%; top: calc(var(--ct) - var(--phh) * var(--cutf, 0) + .4%); bottom: 2.2%; display: flex; align-items: center; justify-content: center;
+    .paper .cap { position: absolute; left: 6%; right: 6%; top: var(--ct); bottom: 2%; display: flex; align-items: center; justify-content: center;
       direction: rtl; text-align: center; font-family: 'Aref Ruqaa', 'Cairo', serif; font-size: clamp(11px, 8.4cqw, 15px); color: #4E4247; opacity: .85; line-height: 1.25; }
     .paper .cap { overflow: hidden; }
-    .paper .cap > span { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; overflow-wrap: anywhere; }
-    .m-card .paper .ph { background: #F3F1ED; }
-    .m-card .paper .ph > img, .m-card .paper .ph > video { height: calc(100% * (1 - var(--cutf, 0))); }
-    .m-card .paper .ph::after { bottom: calc(100% * var(--cutf, 0)); }
-    .m-card .paper .play-badge { top: calc(50% * (1 - var(--cutf, 0))); }
-    .m-card.long .paper .cap > span { -webkit-line-clamp: 4; line-height: 1.15; }
+    .paper .cap > span { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; overflow-wrap: anywhere; }
     .spot-card .cap > span { display: block; -webkit-line-clamp: unset; }
     .pinimg, .tapeimg { position: absolute; z-index: 3; pointer-events: none; max-width: none; user-select: none; }
     .pinimg { width: 18cqw; }
@@ -286,7 +281,7 @@
     .tape::before { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(0,0,0,.05), transparent 12%, transparent 88%, rgba(0,0,0,.05)); }
     .tape.pink { --tape: rgba(236,196,204,.6); }
     .tape.side { left: auto; right: -14px; top: 6px; margin: 0; width: 60px; --tr: 38deg; }
-    @media (max-width: 640px) { .m-card { width: calc(var(--w, 170px) * .84); margin: var(--mt, 0px) 8px 18px; } .paper .cap { font-size: 12.5px; } }
+    @media (max-width: 640px) { .m-card { width: calc(var(--w, 170px) * .78); margin: var(--mt, 0px) 8px 18px; } .paper .cap { font-size: 12.5px; } }
     /* الصورة بتتعلق قدامك لما توصلها */
     .m-card .hang { opacity: 0; }
     .m-card.in .hang { animation: pinIn .9s cubic-bezier(.3,1.5,.5,1) var(--dl, 0s) both; }
@@ -940,12 +935,7 @@
         const p = paperHTML(m, i);
         c.style.setProperty('--r', p.tilt + 'deg');
         c.style.setProperty('--ox', p.side === 'cl' ? '14%' : '86%');
-        // الكلام الطويل بياخد ورقة أعرض عشان يتقري كله
-        const tl = (m.title || m.text || '').trim().length;
-        // وكمان الصورة بتقصر شوية من تحت وبتسيب مساحة ورق أكبر للكلام
-        if (tl > 110) c.classList.add('long');
-        c.style.setProperty('--cutf', tl > 110 ? .3 : tl > 75 ? .22 : tl > 45 ? .14 : tl > 28 ? .07 : 0);
-        c.style.setProperty('--w', Math.max(sizes[i % sizes.length], tl > 110 ? 236 : tl > 75 ? 214 : tl > 45 ? 196 : tl > 28 ? 180 : 0) + 'px');
+        c.style.setProperty('--w', sizes[i % sizes.length] + 'px');
         c.style.setProperty('--mt', [0, 26, 8, 34, 14, 2][(i * 5) % 6] + 'px');
         c.style.setProperty('--mx', (10 + (i * 7) % 12) + 'px');
         c.style.setProperty('--dl', ((i % 4) * 0.12).toFixed(2) + 's');
