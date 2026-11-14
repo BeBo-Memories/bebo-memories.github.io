@@ -1008,7 +1008,7 @@
       el.style.left = (rb.left + rb.width / 2 - paper.offsetWidth / 2) + 'px'; el.style.top = (rb.top + rb.height / 2 - paper.offsetHeight / 2) + 'px';
       el.style.transform = `perspective(1000px) translate3d(0px,0px,0px) rotateY(0deg) rotateZ(${tilt}deg) scale(1)`;
       setTimeout(() => {
-        el.remove(); back.remove();
+        el.remove(); back.remove(); setTimeout(unduck, 60);
         card.classList.remove('ghosted'); wall.classList.remove('paused'); document.body.classList.remove('calm'); window.__hearts && window.__hearts(true);
         cool = { card, until: performance.now() + 700 };
         spot = null;
@@ -1550,23 +1550,41 @@
     let musicOn = true, musicStarted = false;
     if (song) { song.loop = true; song.preload = 'auto'; }
     const mBtn = document.getElementById('music-btn');
-    function fadeTo(v, ms = 1200) {
-      if (!song) return; const v0 = song.volume, t0 = performance.now();
-      (function st(t) { const p = Math.min(1, (t - t0) / ms); song.volume = Math.min(1, Math.max(0, v0 + (v - v0) * p)); if (p < 1) requestAnimationFrame(st); else if (v === 0) song.pause(); })(t0);
+    // مستوى الصوت بيتظبط من خلال Web Audio (عشان الآيفون مش بيسمح يوطّي صوت الأغنية غير كده)
+    const LOUD = .7, SOFT = .13;
+    let gainNode = null, fadeId = 0;
+    function initGain() {
+      if (gainNode || !song) return;
+      try { const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return;
+        const ctx = new AC(), src = ctx.createMediaElementSource(song); gainNode = ctx.createGain();
+        src.connect(gainNode).connect(ctx.destination); gainNode.gain.value = song.volume; song.volume = 1; window.__songCtx = ctx;
+      } catch (_) { gainNode = null; }
     }
-    function playSong() { if (!song || !musicOn) return; song.volume = 0; song.play().then(() => fadeTo(.7)).catch(() => {}); }
+    const getVol = () => gainNode ? gainNode.gain.value : song.volume;
+    const setVol = v => { v = Math.min(1, Math.max(0, v)); if (gainNode) gainNode.gain.value = v; else song.volume = v; };
+    function fadeTo(v, ms = 1200, keepPlaying = false) {
+      if (!song) return; const v0 = getVol(), t0 = performance.now(), id = ++fadeId;
+      if (window.__songCtx && window.__songCtx.state === 'suspended') window.__songCtx.resume().catch(() => {});
+      (function st(t) { if (id !== fadeId) return; const p = Math.min(1, (t - t0) / ms); setVol(v0 + (v - v0) * p);
+        if (p < 1) requestAnimationFrame(st); else if (v === 0 && !keepPlaying) song.pause(); })(t0);
+    }
+    function playSong() { if (!song || !musicOn) return; if (song.paused) setVol(0); song.play().then(() => fadeTo(ducked ? SOFT : LOUD)).catch(() => {}); }
     function startMusic() {
-      if (!song || musicStarted) return; musicStarted = true;
+      if (!song || musicStarted) return; musicStarted = true; initGain();
       mBtn.hidden = false; mBtn.animate([{ opacity: 0, transform: 'scale(.6)' }, { opacity: 1, transform: 'none' }], { duration: 600, easing: 'cubic-bezier(.22,1,.36,1)' });
       playSong();
     }
     mBtn.onclick = () => { musicOn = !musicOn; mBtn.classList.toggle('off', !musicOn); if (musicOn) playSong(); else fadeTo(0, 400); };
-    // لو فيديو اتفتح بالصوت الأغنية بتسكت، ولما يتقفل بترجع
+    // لو فيديو اتفتح بالصوت الأغنية بتفضل شغالة بس صوتها بيوطى، ولما الفيديو يقف أو يتقفل بيعلى تاني
     let ducked = false;
-    document.addEventListener('play', e => { const v = e.target; if (v.tagName === 'VIDEO' && !v.muted && v !== introV && musicStarted && musicOn && !song.paused) { ducked = true; fadeTo(0, 300); } }, true);
-    function unduck() { if (ducked) { ducked = false; playSong(); } }
+    const loudVideos = () => [...document.querySelectorAll('video')].some(v => v !== introV && !v.paused && !v.ended && !v.muted && v.isConnected);
+    function duck() { if (!song || !musicStarted || !musicOn) return; ducked = true; if (song.paused) playSong(); else fadeTo(SOFT, 450); }
+    function unduck() { if (!ducked || loudVideos()) return; ducked = false; if (!song || !musicOn) return; if (song.paused) playSong(); else fadeTo(LOUD, 900); }
+    document.addEventListener('play', e => { const v = e.target; if (v.tagName === 'VIDEO' && !v.muted && v !== introV) duck(); }, true);
+    document.addEventListener('volumechange', e => { const v = e.target; if (v.tagName === 'VIDEO' && v !== introV && !v.paused) (v.muted ? setTimeout(unduck, 50) : duck()); }, true);
+    ['pause', 'ended'].forEach(ev => document.addEventListener(ev, e => { if (e.target.tagName === 'VIDEO' && e.target !== introV) setTimeout(unduck, 120); }, true));
     // لو قفلتي الصفحة أو روحتي تطبيق تاني الأغنية بتقف، ولما ترجعي بتكمّل
-    document.addEventListener('visibilitychange', () => { if (!song || !musicStarted) return; if (document.hidden) song.pause(); else if (musicOn && !ducked) playSong(); });
+    document.addEventListener('visibilitychange', () => { if (!song || !musicStarted) return; if (document.hidden) song.pause(); else if (musicOn) playSong(); });
     // ريكورد الصوت اللي في آخر الجواب — الأغنية بتسكت وهو شغال وبترجع بعده
     (function voiceNote() {
       const box = document.getElementById('lt-voice'); if (!box || !SITE.letter || !SITE.letter.voice) return;
@@ -1576,7 +1594,7 @@
       a.addEventListener('loadedmetadata', () => { time.textContent = fmt(a.duration); });
       function paint() { const p = a.duration ? a.currentTime / a.duration : 0; const n = Math.round(p * bars.length); bars.forEach((b, i) => b.classList.toggle('on', i < n)); time.textContent = fmt(a.paused && !a.currentTime ? a.duration : a.currentTime); }
       a.addEventListener('timeupdate', paint);
-      a.addEventListener('play', () => { box.classList.add('playing'); if (song && musicStarted && musicOn && !song.paused) { ducked = true; fadeTo(0, 300); } });
+      a.addEventListener('play', () => { box.classList.add('playing'); duck(); });
       let byVideo = false;
       const stop = () => { box.classList.remove('playing'); if (!byVideo) unduck(); byVideo = false; };
       a.addEventListener('pause', stop);
